@@ -1,3 +1,3 @@
-# Tic-Tac-Toe_inTerminal
+# Tic-Tac-Terminal
 
-A small Tic-tac-toe game written in kotlin, with GOFAI opponent that analyzes every square on each line on all directions.
+A small Tic-tac-toe game written in kotlin, with GOFAI opponent that Loops through and analyzes every square on each line on all directions.
