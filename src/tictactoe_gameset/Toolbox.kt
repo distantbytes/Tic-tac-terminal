@@ -32,7 +32,7 @@ object Toolbox {
         }
     }
 
-    fun printFixedTimeLoadingEffect(repeat: Int, delayMilis: Int, string: String, char: Char){
+    fun printFixedTimeLoadingEllipsis(repeat: Int, delayMilis: Int, string: String, char: Char){
         require(repeat >= 1)
         print(string)
         for (i in 1..repeat){

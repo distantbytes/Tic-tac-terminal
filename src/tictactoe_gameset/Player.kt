@@ -22,32 +22,31 @@ open class Player(
         while (true){
             val reply = askPlayerForInput()
             try {
-                when (  //match the value of redirected,
-                    val redirected =
-                        if (Toolbox.getAlphabetIndex(reply[0]) != null) posRedirection(reply[0], reply[1].toString().toInt())
-                        //if the first character in reply isn't alphabet letter, we'll get null from getAlphabetIndex, we can then use the right parsing method
-                        else posRedirection(null, reply[0].toString().toInt())
-                        //redirect either an alphabet character plus an integer, or an integer alone and leave character null
+                when (  //match the value of resolved,
+                    val resolved =
+                        if (Toolbox.getAlphabetIndex(reply[0]) != null) resolveCoordRef(reply[0], reply[1].toString().toInt())
+                        //if the first character in reply isn't an alphabet letter, we'll get null from getAlphabetIndex
+                        else resolveCoordRef(null, reply[0].toString().toInt())
+                        //pass either an alphabet character plus an integer, or an integer alone and leave character null
                 ) {
                     null -> println("That's not a valid token! -2")
                     //when an array is returned which means the token is in correct format, return it. be aware that it might still be out of bound
-                    else -> return redirected
+                    else -> return resolved
                 }
             } catch (e: Exception){
-                println("That's not a valid token! -3")    //occurs when the byte number we need is not actually an integer
+                println("That's not a valid token! -3")    //occurs when the byte number we need is not actually a number
             }
         }
     }
-    private fun posRedirection(char: Char?, int: Int): Array<Int>?{
-        //two different redirecting methods are prepared,
+    private fun resolveCoordRef(char: Char?, int: Int): Array<Int>?{
         if (char != null) {
-            //for situation of an alphabet and an integer, we get the letter's index and use these numbers to point rows and columns.
+            //for situation of an alphabet and an integer, we get the letter's index and use these numbers as coords of rows and columns.
             val charInInt = Toolbox.getAlphabetIndex(char)
             return if (charInInt == null) null else arrayOf(charInInt - 1, int - 1)
             //have them subtracted by 1 because array indexes starts with 0
-            //return null if the return value of getAlphabetIndex is null, which happens when the provided character not in alphabet
+            //return null if getAlphabetIndex returns null, which happens when the provided character not in alphabet
         } else {
-            //if we meet only one integer, simply redirect according to the keypad arrangement on a full keyboard
+            //if we meet only one integer, simply resolve according to the keypad arrangement on a full keyboard
             return when (int) {
                 7 -> arrayOf(0, 0)
                 8 -> arrayOf(0, 1)
@@ -68,7 +67,7 @@ open class Player(
         while (true){
             val playerInput = readLine()
             if (playerInput != null && playerInput.length in 1..2) return playerInput
-            //ensure that playInput as string isn't null and is in proper length
+            //ensure that playerInput as string isn't null and is in proper length
             else println("That's not a valid token! -1")
         }
     }

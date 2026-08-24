@@ -7,7 +7,7 @@ class Mat(
 ) {
     val matArray = createMat(size)
 
-    fun extractArray(): Array< //contains 3 arrays for rows, columns and diagonals
+    fun extractArray(): Array< //contains 3 arrays, each for rows, columns and diagonals
             Array< //contains the same number of arrays as val size, each array is a row, column or diagonal
                     Array<Block> //row, column or diagonal, contains nullable Blocks
                     >
@@ -26,7 +26,7 @@ class Mat(
             Array(size){ i -> matArray[i][size - (i + 1)] } // this is the anti diag, from top-right to bottom-left, change second index in the opposite direction
         )
 
-        //finally, throw the three arrays into one
+        //finally, put the three arrays into one
         return arrayOf(rows, cols, diags)
     }
     fun getBlock(ri: Int, ci: Int): Block?{
@@ -37,7 +37,7 @@ class Mat(
         }
     }
 
-    fun checkFullStreak(extracted: Array<Array<Array<Block>>>): Piece?{
+    fun checkWinningSeq(extracted: Array<Array<Array<Block>>>): Piece?{
         for (eachDir in extracted){
             for (eachLined in eachDir){
                 val countSamePieces = mutableMapOf(Piece.PLAYER_A to 0, Piece.PLAYER_B to 0)
@@ -55,8 +55,8 @@ class Mat(
         }
         return null
     }
-    fun checkFullStreak(tPiece: Piece, extracted: Array<Array<Array<Block>>>): Boolean{
-        return checkFullStreak(extracted) == tPiece
+    fun checkWinningSeq(tPiece: Piece, extracted: Array<Array<Array<Block>>>): Boolean{
+        return checkWinningSeq(extracted) == tPiece
     }
 
 /*    fun getMat(): Array<Array<Block>>{
