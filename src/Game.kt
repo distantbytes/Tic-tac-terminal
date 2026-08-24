@@ -10,7 +10,7 @@ import kotlin.math.abs
         val playerA = Player(Piece.PLAYER_A, mat)
         val playerB = CongMnkBot(mat) as Player
         Thread.sleep(500)
-        printPosRedirection(mat.size)
+        printCoordReferences(mat.size)
         when (gameLoop(mat, playerA, playerB)) {
             playerA -> {
                 Thread.sleep(1000)
@@ -32,14 +32,14 @@ import kotlin.math.abs
             playerA.goStep()
             stepCount++
             if (stepCount >= mat.size * mat.size) break
-            if (mat.checkFullStreak(playerA.thisPiece, mat.extractArray())) return playerA
+            if (mat.checkWinningSeq(playerA.thisPiece, mat.extractArray())) return playerA
             Thread.sleep(1000)
             playerB.goStep()
             stepCount++
             if (stepCount >= mat.size * mat.size) break
-            if (mat.checkFullStreak(playerB.thisPiece, mat.extractArray())) return playerB
+            if (mat.checkWinningSeq(playerB.thisPiece, mat.extractArray())) return playerB
         }
-        return when (mat.checkFullStreak(mat.extractArray())) {
+        return when (mat.checkWinningSeq(mat.extractArray())) {
             playerA.thisPiece -> playerA
             playerB.thisPiece -> playerB
             else -> null
@@ -65,7 +65,7 @@ import kotlin.math.abs
         }
     }
 
-    fun printPosRedirection(size: Int) {
+    fun printCoordReferences(size: Int) {
         require(size in 1..26)
         println("\nYou can target the grid cell with the following tokens: ")
         if (size > 3) {
