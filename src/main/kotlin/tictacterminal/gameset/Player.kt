@@ -3,24 +3,39 @@ package tictacterminal.gameset
 open class Player(
     val thisPiece: Piece,
     private val mat: Mat,
-    val textPool: Array<String?> = arrayOf("It's your turn, take a step: ", "${thisPiece.mark} played at square ", "Congratulations! you won:)")
+    val prompts: Array<String?> = arrayOf("It's your turn, take a step: ", "${thisPiece.mark} played at square ", "Congratulations! you won:)")
     ) {
 
-    open fun goStep(){
-        textPool[0]?.let { println(it) }
+    open fun goStep(): Int {
+        prompts[0]?.let { println(it) }
         while (true) {
             val blockToPlayAt = getNextStep()
+            if (blockToPlayAt.size <= 2 && blockToPlayAt[0] < 0){
+                when (blockToPlayAt[0]){
+                    -4 -> {
+                        if (Toolbox.askYesOrNoQuestion("Are you sure to end the game? ", false)) return -4
+                        else println("Take a step, then: ")
+                        // TODO: 2026/8/25 gotta put this in the prompts array later. there's a problem with it
+                        continue
+                    }
+                    else -> {/* do nothing */}
+                }
+            }
             if (mat.playAt(blockToPlayAt[0], blockToPlayAt[1], thisPiece)){
                 Thread.sleep(100)
                 println(mat.toString())
                 println(pointOutStep(mat.getBlock(blockToPlayAt[0], blockToPlayAt[1])!!))
-                break
+                return 0
             }
         }
     }
     protected open fun getNextStep(): Array<Int>{
         while (true){
             val reply = askPlayerForInput()
+            when (reply[0]){
+                '!' -> return arrayOf(-4)
+                else -> {/* do nothing */}
+            }
             try {
                 when (  //match the value of resolved,
                     val resolved =
@@ -29,7 +44,9 @@ open class Player(
                         else resolveCoordRef(null, reply[0].toString().toInt())
                         //pass either an alphabet character plus an integer, or an integer alone and leave character null
                 ) {
-                    null -> println("That's not a valid token! -2")
+                    null -> {
+                        println("That's not a valid token! -2")
+                    }
                     //when an array is returned which means the token is in correct format, return it. be aware that it might still be out of bound
                     else -> return resolved
                 }
@@ -73,6 +90,6 @@ open class Player(
     }
 
     open fun pointOutStep(playedAt: Block): String{
-        return textPool[1] + Toolbox.getIndexAlphabet((playedAt.pos[0] + 1).toByte())!! + playedAt.pos[1] + "\n"
+        return prompts[1] + Toolbox.getIndexAlphabet((playedAt.pos[0] + 1).toByte())!! + playedAt.pos[1] + "\n"
     }
 }
