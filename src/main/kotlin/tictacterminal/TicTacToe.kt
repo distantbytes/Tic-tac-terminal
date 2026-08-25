@@ -15,37 +15,49 @@ class TicTacToe {
         Thread.sleep(500)
         printCoordReferences(mat.size)
         when (gameLoop(mat, playerA, playerB)) {
-            playerA -> {
+            1 -> {
                 Thread.sleep(1000)
-                println(playerA.textPool[2])
+                println(playerA.prompts[2])
             }
-            playerB -> {
+            2 -> {
                 Thread.sleep(1000)
-                println(playerB.textPool[2])
+                println(playerB.prompts[2])
             }
-            null -> println("And it's a tie!")
+            0 -> {
+                Thread.sleep(1000)
+                println("And it's a tie!")
+            }
+            -4 -> {
+                println("Game Terminated")
+                return
+            }
+            else -> println("Unexpected result value")
         }
 
     }
 
-    fun gameLoop(mat: Mat, playerA: Player, playerB: Player): Player? {
+    fun gameLoop(mat: Mat, playerA: Player, playerB: Player): Int {
         var stepCount = 0
         while (true) {
             Thread.sleep(1000)
-            playerA.goStep()
-            stepCount++
-            if (stepCount >= mat.size * mat.size) break
-            if (mat.checkWinningSeq(playerA.thisPiece, mat.extractArray())) return playerA
+            when (playerA.goStep()){
+                0 -> {
+                    stepCount++
+                    if (stepCount >= mat.size * mat.size) break
+                    if (mat.checkWinningSeq(playerA.thisPiece, mat.extractArray())) return 1
+                }
+                -4 -> return -4
+            }
             Thread.sleep(1000)
             playerB.goStep()
             stepCount++
             if (stepCount >= mat.size * mat.size) break
-            if (mat.checkWinningSeq(playerB.thisPiece, mat.extractArray())) return playerB
+            if (mat.checkWinningSeq(playerB.thisPiece, mat.extractArray())) return 2
         }
         return when (mat.checkWinningSeq(mat.extractArray())) {
-            playerA.thisPiece -> playerA
-            playerB.thisPiece -> playerB
-            else -> null
+            playerA.thisPiece -> 1
+            playerB.thisPiece -> 2
+            else -> 0
         }
     }
 
