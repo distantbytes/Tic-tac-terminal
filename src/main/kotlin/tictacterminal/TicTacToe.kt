@@ -13,7 +13,7 @@ class TicTacToe {
         val playerA = Player(Piece.PLAYER_A, mat)
         val playerB = CongMnkBot(mat) as Player
         Thread.sleep(500)
-        printCoordReferences(mat.size)
+        printTokenHints(mat.size)
         when (gameLoop(mat, playerA, playerB)) {
             1 -> {
                 Thread.sleep(1000)
@@ -45,6 +45,10 @@ class TicTacToe {
                     stepCount++
                     if (stepCount >= mat.size * mat.size) break
                     if (mat.checkWinningSeq(playerA.thisPiece, mat.extractArray())) return 1
+                }
+                -1 -> {
+                    printTokenHints(mat.size)
+                    continue
                 }
                 -4 -> return -4
             }
@@ -80,9 +84,18 @@ class TicTacToe {
         }
     }
 
-    fun printCoordReferences(size: Int) {
+    fun printTokenHints(size: Int) {
         require(size in 1..26)
-        println("\nYou can target the grid cell with the following tokens: ")
+        println("\nYou can use these tokens as option triggers: ")
+        print("|  ")
+        for ((token, option) in mapOf(
+            '?' to "print hints again",
+            '!' to "end game and exit"
+        )){
+            print("$token -> $option  |  ")
+            Thread.sleep(100)
+        }
+        println("\nTarget the grid cell with the following ones: ")
         if (size > 3) {
             for (eachRow in 1..size) {
                 Thread.sleep(100)

@@ -12,6 +12,7 @@ open class Player(
             val blockToPlayAt = getNextStep()
             if (blockToPlayAt.size <= 2 && blockToPlayAt[0] < 0){
                 when (blockToPlayAt[0]){
+                    -1 -> return -1
                     -4 -> {
                         if (Toolbox.askYesOrNoQuestion("Are you sure to end the game? ", false)) return -4
                         else println("Take a step, then: ")
@@ -33,6 +34,7 @@ open class Player(
         while (true){
             val reply = askPlayerForInput()
             when (reply[0]){
+                '?' -> return arrayOf(-1)
                 '!' -> return arrayOf(-4)
                 else -> {/* do nothing */}
             }
