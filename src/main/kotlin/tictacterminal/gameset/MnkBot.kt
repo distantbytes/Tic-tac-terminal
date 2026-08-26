@@ -9,47 +9,47 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
     "Thinking"
 )) {
 
-    override fun getNextStep(): Move{  //we will return a Move object to represent the position to play at
+    override fun getNextMove(): Move{  //we will return a Move object to represent the coords of the square to play at
         val extracted = mat.extractArray()
-        val candidates: MutableMap<Block, Int> = mutableMapOf()    //create an empty map for candidate options
-        //find all the almost winning sequences and add the only remaining available block on that line to the candidates
+        val candidates: MutableMap<Square, Int> = mutableMapOf()    //create an empty map for candidate options
+        //find all the almost winning sequences and add the only remaining available square on that line to the candidates
         thinkingDelay()
         for (eachDir in extracted){
             for (eachLined in eachDir){
                 findAlmostWinningSeq(eachLined, Piece.PLAYER_A, Piece.BLANK)?.let {
-                    //only deal with the the situations when findAlmostWinningSeq returns a valid Block
-                    candidates.put(it, (candidates[it] ?: 0) + 1) //if the block already exists in candidates, add its map value by 1
+                    //only deal with the the situations when findAlmostWinningSeq returns a valid square
+                    candidates.put(it, (candidates[it] ?: 0) + 1) //if the square already exists in candidates, add its map value by 1
                 }
                 findAlmostWinningSeq(eachLined, thisPiece, Piece.BLANK)?.let {
                     candidates.put(it, (candidates[it] ?: 0) + 1)
                 }
             }
         }
-        //now we must sort out the block with the largest map value, and return its position
-        return if (candidates.isNotEmpty()) Move(Toolbox.sortByValueDescendingWithRandomTies(candidates).keys.first().pos[0], Toolbox.sortByValueDescendingWithRandomTies(candidates).keys.first().pos[1])
+        //now we must sort out the square with the largest map value, and return its coords
+        return if (candidates.isNotEmpty()) Move(Toolbox.sortByValueDescendingWithRandomTies(candidates).keys.first().coords[0], Toolbox.sortByValueDescendingWithRandomTies(candidates).keys.first().coords[1])
         else {
-            val emptySpots = mutableListOf<Block>()
+            val emptySpots = mutableListOf<Square>()
             for (eachRow in mat.matArray){
-                for (eachBlock in eachRow){
-                    if (eachBlock.piece == Piece.BLANK)
-                        emptySpots.add(eachBlock)
+                for (eachSquare in eachRow){
+                    if (eachSquare.piece == Piece.BLANK)
+                        emptySpots.add(eachSquare)
                 }
             }
             emptySpots.shuffle(Random.Default)
-            Move(emptySpots[0].pos[0], emptySpots[1].pos[1])
-            //play at random block
+            Move(emptySpots[0].coords[0], emptySpots[1].coords[1])
+            //play at random square
         }
     }
 
-    private fun findAlmostWinningSeq(array: Array<Block>, mTarget: Piece, mOneLeft: Piece): Block?{
+    private fun findAlmostWinningSeq(array: Array<Square>, mTarget: Piece, mOneLeft: Piece): Square?{
         var countLeft = 0
-        var oneLeft: Block? = null
-        for (eachBlock in array){
-            when (eachBlock.piece){
+        var oneLeft: Square? = null
+        for (eachSquare in array){
+            when (eachSquare.piece){
                 mOneLeft -> {   //when the same enum value as mOneLeft is matched
                     countLeft++
                     if (countLeft > 1) return null  //check countLeft right away
-                    oneLeft = eachBlock
+                    oneLeft = eachSquare
                 }
                 mTarget -> {/*do nothing*/}
                 else -> return null //return null if a third value is discovered

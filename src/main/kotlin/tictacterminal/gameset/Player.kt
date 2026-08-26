@@ -4,34 +4,34 @@ open class Player(
     val thisPiece: Piece,
     private val mat: Mat,
     val prompts: Array<String?> = arrayOf(
-        "It's your turn, take a step: ",
+        "It's your turn, take a move: ",
         "${thisPiece.mark} played at square ",
         "You win:)",
         null,
         "Are you sure to quit the game? ",
-        "Take a step, then: "
+        "Take a move, then: "
     )
     ) {
 
-    open fun goStep(): Move? {
+    open fun takeMove(): Move? {
         prompts[0]?.let { println(it) }
         while (true) {
-            val blockToPlayAt = getNextStep()
-            if (blockToPlayAt.c != null) {
-                when (blockToPlayAt.c){
-                    'H' -> return blockToPlayAt
+            val squareToPlayAt = getNextMove()
+            if (squareToPlayAt.c != null) {
+                when (squareToPlayAt.c){
+                    'H' -> return squareToPlayAt
                     'Q' -> {
-                        if (Toolbox.askYesOrNoQuestion(prompts[4] ?: "", false)) return blockToPlayAt
+                        if (Toolbox.askYesOrNoQuestion(prompts[4] ?: "", false)) return squareToPlayAt
                         else println(prompts[5] ?: "")
                         continue
                     }
                     else -> {}
                 }
             }
-            if (mat.playAt(blockToPlayAt, thisPiece)){
+            if (mat.playAt(squareToPlayAt, thisPiece)){
                 Thread.sleep(100)
                 println(mat.toString())
-                println(pointOutStep(mat.getBlock(blockToPlayAt)!!))
+                println(pointOutMove(mat.getSquare(squareToPlayAt)!!))
                 return null
             }
 /*
@@ -55,7 +55,7 @@ open class Player(
 */
         }
     }
-    protected open fun getNextStep(): Move{
+    protected open fun getNextMove(): Move{
         while (true){
             val reply = askPlayerForInput()
             when (reply[0]){
@@ -66,9 +66,9 @@ open class Player(
             try {
                 when (  //match the value of resolved,
                     val resolved =
-                        if (Toolbox.getAlphabetIndex(reply[0]) != null) resolveCoordRef(reply[0], reply[1].toString().toInt())
+                        if (Toolbox.getAlphabetIndex(reply[0]) != null) resolveCoordsRef(reply[0], reply[1].toString().toInt())
                         //if the first character in reply isn't an alphabet letter, we'll get null from getAlphabetIndex
-                        else resolveCoordRef(null, reply[0].toString().toInt())
+                        else resolveCoordsRef(null, reply[0].toString().toInt())
                         //pass either an alphabet character plus an integer, or an integer alone and leave character null
                 ) {
                     null -> {
@@ -82,7 +82,7 @@ open class Player(
             }
         }
     }
-    private fun resolveCoordRef(char: Char?, int: Int): Move?{
+    private fun resolveCoordsRef(char: Char?, int: Int): Move?{
         if (char != null) {
             //for situation of an alphabet and an integer, we get the letter's index and use these numbers as coords of rows and columns.
             val charInInt = Toolbox.getAlphabetIndex(char)
@@ -116,7 +116,7 @@ open class Player(
         }
     }
 
-    open fun pointOutStep(playedAt: Block): String{
-        return prompts[1] + Toolbox.getIndexAlphabet((playedAt.pos[0] + 1).toByte())!! + playedAt.pos[1] + "\n"
+    open fun pointOutMove(playedAt: Square): String{
+        return prompts[1] + Toolbox.getIndexAlphabet((playedAt.coords[0] + 1).toByte())!! + playedAt.coords[1] + "\n"
     }
 }

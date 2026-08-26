@@ -36,13 +36,13 @@ fun main(args: Array<String>) {
 }
 
 fun gameLoop(mat: Mat, playerA: Player, playerB: Player): Int {
-    var stepCount = 0
+    var movesCount = 0
     while (true) {
         Thread.sleep(1000)
-        when (playerA.goStep()?.c) {
+        when (playerA.takeMove()?.c) {
             null -> {
-                stepCount++
-                if (stepCount >= mat.size * mat.size) break
+                movesCount++
+                if (movesCount >= mat.size * mat.size) break
                 if (mat.checkWinningSeq(playerA.thisPiece, mat.extractArray())) return 1
             }
             'H' -> {
@@ -52,9 +52,9 @@ fun gameLoop(mat: Mat, playerA: Player, playerB: Player): Int {
             'Q' -> return -4
         }
         Thread.sleep(1000)
-        playerB.goStep()
-        stepCount++
-        if (stepCount >= mat.size * mat.size) break
+        playerB.takeMove()
+        movesCount++
+        if (movesCount >= mat.size * mat.size) break
         if (mat.checkWinningSeq(playerB.thisPiece, mat.extractArray())) return 2
     }
     return when (mat.checkWinningSeq(mat.extractArray())) {

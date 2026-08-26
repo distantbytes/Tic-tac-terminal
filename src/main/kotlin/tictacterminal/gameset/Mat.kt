@@ -9,7 +9,7 @@ class Mat(
 
     fun extractArray(): Array< //contains 3 arrays, each for rows, columns and diagonals
             Array< //contains the same number of arrays as val size, each array is a row, column or diagonal
-                    Array<Block> //row, column or diagonal, contains nullable Blocks
+                    Array<Square> //row, column or diagonal, contains nullable squares
                     >
             >{
         require(size in 3..6)
@@ -29,7 +29,7 @@ class Mat(
         //finally, put the three arrays into one
         return arrayOf(rows, cols, diags)
     }
-    fun getBlock(move: Move): Block?{
+    fun getSquare(move: Move): Square?{
         return try {
             matArray[move.rI][move.cI]
         } catch (e: IndexOutOfBoundsException){
@@ -37,12 +37,12 @@ class Mat(
         }
     }
 
-    fun checkWinningSeq(extracted: Array<Array<Array<Block>>>): Piece?{
+    fun checkWinningSeq(extracted: Array<Array<Array<Square>>>): Piece?{
         for (eachDir in extracted){
             for (eachLined in eachDir){
                 val countSamePieces = mutableMapOf(Piece.PLAYER_A to 0, Piece.PLAYER_B to 0)
-                for (eachBlock in eachLined){
-                    when(eachBlock.piece){
+                for (eachSquare in eachLined){
+                    when(eachSquare.piece){
                         Piece.PLAYER_A -> countSamePieces[Piece.PLAYER_A] = countSamePieces[Piece.PLAYER_A]!! + 1
                         Piece.PLAYER_B -> countSamePieces[Piece.PLAYER_B] = countSamePieces[Piece.PLAYER_B]!! + 1
                         Piece.BLANK -> continue
@@ -55,7 +55,7 @@ class Mat(
         }
         return null
     }
-    fun checkWinningSeq(tPiece: Piece, extracted: Array<Array<Array<Block>>>): Boolean{
+    fun checkWinningSeq(tPiece: Piece, extracted: Array<Array<Array<Square>>>): Boolean{
         return checkWinningSeq(extracted) == tPiece
     }
 
@@ -88,21 +88,21 @@ class Mat(
         var boolean = false
         for (eachRow in matArray){
             if (boolean) matForPrint += "\n"
-            for (eachBlock in eachRow){
-                matForPrint += eachBlock.toString()
+            for (eachSquare in eachRow){
+                matForPrint += eachSquare.toString()
             }
             boolean = true
         }
         return matForPrint
     }
 
-    private fun createMat(size: Int): Array<Array<Block>>{
+    private fun createMat(size: Int): Array<Array<Square>>{
         //magic code! Don't touch!
-        val array: Array<Array<Block>> = Array(size) { Array(size){Block(emptyArray())} }
+        val array: Array<Array<Square>> = Array(size) { Array(size){Square(emptyArray())} }
         for ((rowCount, eachRow) in array.withIndex()){
             for ((itemCount) in eachRow.withIndex()){
-                array[rowCount][itemCount] = Block(arrayOf(rowCount, itemCount))
-            }   //to make sure each block's position value matches its actual position
+                array[rowCount][itemCount] = Square(arrayOf(rowCount, itemCount))
+            }   //to make sure each square's coords value matches
         }
         return array
     }
