@@ -2,7 +2,12 @@ package tictacterminal.gameset
 
 import kotlin.random.Random
 
-class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(null, "X played at square ", "Too bad, loser:(")) {
+class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
+    null,
+    "X played at square ",
+    "Too bad, loser:(",
+    "Thinking"
+)) {
 
     override fun getNextStep(): Array<Int>{  //we will return a size-2 array to represent the position to play at
         val extracted = mat.extractArray()
@@ -53,6 +58,6 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(null
     }
 
     private fun thinkingDelay(){
-        Toolbox.printFixedTimeLoadingEllipsis(5, (250 + mat.size * 50), "Thinking", '.')
+        Toolbox.printFixedTimeLoadingEllipsis(5, (250 + mat.size * 50), prompts[3] ?: "", '.')
     }
 }
