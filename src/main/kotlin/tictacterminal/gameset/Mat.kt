@@ -5,7 +5,8 @@ import java.lang.IndexOutOfBoundsException
 class Mat(
     val size: Int = 3
 ) {
-    val matArray = createMat(size)
+    var matArray = createMat(size)
+        private set
 
     fun extractArray(): Array< //contains 3 arrays, each for rows, columns and diagonals
             Array< //contains the same number of arrays as val size, each array is a row, column or diagonal
@@ -105,6 +106,13 @@ class Mat(
             }   //to make sure each square's coords value matches
         }
         return array
+    }
+
+    fun attemptTakeback(mat: Mat): Boolean{
+        return if (mat.size == size){
+            matArray = mat.matArray
+            true
+        } else false
     }
 }
 

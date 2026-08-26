@@ -8,12 +8,12 @@ open class Player(
         "${thisPiece.mark} played at square ",
         "You win:)",
         null,
-        "Are you sure to quit the game? ",
+        "Are you sure to ",
         "Take a move, then: "
     )
     ) {
 
-    open fun takeMove(): Move? {
+    open fun takeMove(): Move {
         prompts[0]?.let { println(it) }
         while (true) {
             val squareToPlayAt = getNextMove()
@@ -21,7 +21,12 @@ open class Player(
                 when (squareToPlayAt.c){
                     'H' -> return squareToPlayAt
                     'Q' -> {
-                        if (Toolbox.askYesOrNoQuestion(prompts[4] ?: "", false)) return squareToPlayAt
+                        if (Toolbox.askYesOrNoQuestion((prompts[4] ?: "") + "quit the game? ", false)) return squareToPlayAt
+                        else println(prompts[5] ?: "")
+                        continue
+                    }
+                    'T' -> {
+                        if (Toolbox.askYesOrNoQuestion((prompts[4] ?: "") + "take that back? ", false)) return squareToPlayAt
                         else println(prompts[5] ?: "")
                         continue
                     }
@@ -32,7 +37,7 @@ open class Player(
                 Thread.sleep(100)
                 println(mat.toString())
                 println(pointOutMove(mat.getSquare(squareToPlayAt)!!))
-                return null
+                return squareToPlayAt
             }
 /*
             if (blockToPlayAt.size <= 2 && blockToPlayAt[0] < 0){
@@ -61,6 +66,7 @@ open class Player(
             when (reply[0]){
                 '?' -> return Move(c = 'H')
                 '!' -> return Move(c = 'Q')
+                '^' -> return Move(c = 'T')
                 else -> {/* do nothing */}
             }
             try {
