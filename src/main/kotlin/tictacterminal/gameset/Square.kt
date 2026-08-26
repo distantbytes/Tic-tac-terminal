@@ -1,9 +1,9 @@
 package tictacterminal.gameset
 
-class Block(
+class Square(
 /*    val posInCol: Int,
     val posInRow: Int,*/
-    val pos: Array<Int>,
+    val coords: Array<Int>,
     wantedPiece: Piece = Piece.BLANK
 ) {
     var piece = wantedPiece
