@@ -84,11 +84,11 @@ fun newMat(): Mat {
 
 fun printTokenHints(size: Int) {
     require(size in 1..26)
-    println("\nYou can use these tokens as option triggers: ")
+    println("\nYou can use these tokens for options: ")
     print("|  ")
     for ((token, option) in mapOf(
         '?' to "print hints again",
-        '!' to "end game and exit"
+        '!' to "quit game and exit"
     )) {
         print("$token -> $option  |  ")
         Thread.sleep(100)
