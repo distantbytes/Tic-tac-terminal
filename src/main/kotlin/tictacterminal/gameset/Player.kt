@@ -6,9 +6,9 @@ open class Player(
     val prompts: Array<String?> = arrayOf(
         "It's your turn, take a step: ",
         "${thisPiece.mark} played at square ",
-        "Congratulations! you won:)",
+        "You win:)",
         null,
-        "Are you sure to end the game? ",
+        "Are you sure to quit the game? ",
         "Take a step, then: "
     )
     ) {
