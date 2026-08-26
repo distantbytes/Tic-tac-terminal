@@ -5,6 +5,8 @@ class History(private val mat: Mat) {
     data class IdentifiedMove(val piece: Piece, val move: Move)
 
     private val movesRec = mutableListOf<IdentifiedMove>()
+    val movesCount: Int
+        get() = movesRec.size
 
     fun record(piece: Piece, move: Move): Boolean {
         return when {
