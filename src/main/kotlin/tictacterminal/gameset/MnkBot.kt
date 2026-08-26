@@ -9,7 +9,7 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
     "Thinking"
 )) {
 
-    override fun getNextStep(): Array<Int>{  //we will return a size-2 array to represent the position to play at
+    override fun getNextStep(): Move{  //we will return a Move object to represent the position to play at
         val extracted = mat.extractArray()
         val candidates: MutableMap<Block, Int> = mutableMapOf()    //create an empty map for candidate options
         //find all the almost winning sequences and add the only remaining available block on that line to the candidates
@@ -26,7 +26,7 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
             }
         }
         //now we must sort out the block with the largest map value, and return its position
-        return if (candidates.isNotEmpty()) Toolbox.sortByValueDescendingWithRandomTies(candidates).keys.first().pos
+        return if (candidates.isNotEmpty()) Move(Toolbox.sortByValueDescendingWithRandomTies(candidates).keys.first().pos[0], Toolbox.sortByValueDescendingWithRandomTies(candidates).keys.first().pos[1])
         else {
             val emptySpots = mutableListOf<Block>()
             for (eachRow in mat.matArray){
@@ -35,7 +35,8 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
                         emptySpots.add(eachBlock)
                 }
             }
-            emptySpots.shuffled(Random.Default)[0].pos
+            emptySpots.shuffle(Random.Default)
+            Move(emptySpots[0].pos[0], emptySpots[1].pos[1])
             //play at random block
         }
     }
