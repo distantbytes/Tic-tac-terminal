@@ -6,6 +6,7 @@ import kotlin.math.abs
 
 fun main(args: Array<String>) {
     val mat = newMat()
+    val history = History(mat)
     println("Mat created with size " + mat.size)
     Thread.sleep(500)
     println(mat.toString())
@@ -13,7 +14,7 @@ fun main(args: Array<String>) {
     val playerB = CongMnkBot(mat) as Player
     Thread.sleep(500)
     printTokenHints(mat.size)
-    when (gameLoop(mat, playerA, playerB)) {
+    when (gameLoop(mat, history, playerA, playerB)) {
         1 -> {
             Thread.sleep(1000)
             println(playerA.prompts[2])
@@ -27,35 +28,47 @@ fun main(args: Array<String>) {
             println("And it's a tie!")
         }
         -4 -> {
-            println("Game Terminated")
+            println("- Game Terminated -")
             return
         }
-        else -> println("Unexpected result value")
+        else -> println("- Unexpected result value -")
     }
     Thread.sleep(1500)
 }
 
-fun gameLoop(mat: Mat, playerA: Player, playerB: Player): Int {
+fun gameLoop(mat: Mat, history: History, playerA: Player, playerB: Player): Int {
     var movesCount = 0
     while (true) {
         Thread.sleep(1000)
-        when (playerA.takeMove()?.c) {
-            null -> {
+        val moveA = playerA.takeMove()
+        when {
+            moveA.c == null -> {
                 movesCount++
                 if (movesCount >= mat.size * mat.size) break
                 if (mat.checkWinningSeq(playerA.thisPiece, mat.extractArray())) return 1
+                println(history.record(playerA.thisPiece, moveA))
             }
-            'H' -> {
+            moveA.c == 'H' -> {
                 printTokenHints(mat.size)
                 continue
             }
-            'Q' -> return -4
+            moveA.c == 'Q' -> return -4
+            moveA.c == 'T' -> {
+                if (history.takeback()) {
+                    println("Took a move back.")
+                    movesCount--
+                    movesCount--
+                    println(mat.toString())
+                } else println("Something went wrong.")
+                continue
+            }
         }
         Thread.sleep(1000)
-        playerB.takeMove()
+        val moveB = playerB.takeMove()
         movesCount++
         if (movesCount >= mat.size * mat.size) break
         if (mat.checkWinningSeq(playerB.thisPiece, mat.extractArray())) return 2
+        println(history.record(playerB.thisPiece, moveB))
     }
     return when (mat.checkWinningSeq(mat.extractArray())) {
         playerA.thisPiece -> 1
@@ -88,6 +101,7 @@ fun printTokenHints(size: Int) {
     print("|  ")
     for ((token, option) in mapOf(
         '?' to "print hints again",
+        '^' to "take a move back",
         '!' to "quit game and exit"
     )) {
         print("$token -> $option  |  ")
