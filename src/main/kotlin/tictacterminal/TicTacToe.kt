@@ -39,17 +39,17 @@ fun gameLoop(mat: Mat, playerA: Player, playerB: Player): Int {
     var stepCount = 0
     while (true) {
         Thread.sleep(1000)
-        when (playerA.goStep()) {
-            0 -> {
+        when (playerA.goStep()?.c) {
+            null -> {
                 stepCount++
                 if (stepCount >= mat.size * mat.size) break
                 if (mat.checkWinningSeq(playerA.thisPiece, mat.extractArray())) return 1
             }
-            -1 -> {
+            'H' -> {
                 printTokenHints(mat.size)
                 continue
             }
-            -4 -> return -4
+            'Q' -> return -4
         }
         Thread.sleep(1000)
         playerB.goStep()

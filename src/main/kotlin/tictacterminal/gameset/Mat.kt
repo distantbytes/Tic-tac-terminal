@@ -29,9 +29,9 @@ class Mat(
         //finally, put the three arrays into one
         return arrayOf(rows, cols, diags)
     }
-    fun getBlock(ri: Int, ci: Int): Block?{
+    fun getBlock(move: Move): Block?{
         return try {
-            matArray[ri][ci]
+            matArray[move.rI][move.cI]
         } catch (e: IndexOutOfBoundsException){
             null
         }
@@ -62,9 +62,9 @@ class Mat(
 /*    fun getMat(): Array<Array<Block>>{
         return matArray.copyOf()
     }*/
-    fun playAt(ri: Int, ci: Int, piece: Piece): Boolean{
+    fun playAt(move: Move, piece: Piece): Boolean{
     return try {
-        matArray[ri][ci].putDownPiece(piece)
+        matArray[move.rI][move.cI].putDownPiece(piece)
     } catch (e: IndexOutOfBoundsException){
         println("You're drawing out of bounds!")
         false
@@ -97,6 +97,7 @@ class Mat(
     }
 
     private fun createMat(size: Int): Array<Array<Block>>{
+        //magic code! Don't touch!
         val array: Array<Array<Block>> = Array(size) { Array(size){Block(emptyArray())} }
         for ((rowCount, eachRow) in array.withIndex()){
             for ((itemCount) in eachRow.withIndex()){
