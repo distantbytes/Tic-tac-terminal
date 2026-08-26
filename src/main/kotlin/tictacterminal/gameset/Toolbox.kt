@@ -41,4 +41,18 @@ object Toolbox {
         }
         println()
     }
+
+    fun askYesOrNoQuestion(prompt: String, default: Boolean): Boolean{
+        println(prompt + if (default) "[Y/n]" else "[y/N]")
+        val answer = readLine()
+        if (answer == "") return default
+        answer?.let {
+            return when (it[0].toUpperCase()){
+                'Y' -> true
+                'N' -> false
+                else -> default
+            }
+        }
+        return default
+    }
 }
