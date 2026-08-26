@@ -37,16 +37,16 @@ fun main(args: Array<String>) {
 }
 
 fun gameLoop(mat: Mat, history: History, playerA: Player, playerB: Player): Int {
-    var movesCount = 0
+    /*var movesCount = 0*/
     while (true) {
         Thread.sleep(1000)
         val moveA = playerA.takeMove()
         when {
             moveA.c == null -> {
-                movesCount++
-                if (movesCount >= mat.size * mat.size) break
+                /*movesCount++*/
+                if (history.movesCount >= mat.size * mat.size) break
                 if (mat.checkWinningSeq(playerA.thisPiece, mat.extractArray())) return 1
-                println(history.record(playerA.thisPiece, moveA))
+                history.record(playerA.thisPiece, moveA)
             }
             moveA.c == 'H' -> {
                 printTokenHints(mat.size)
@@ -56,19 +56,19 @@ fun gameLoop(mat: Mat, history: History, playerA: Player, playerB: Player): Int 
             moveA.c == 'T' -> {
                 if (history.takeback()) {
                     println("Took a move back.")
-                    movesCount--
-                    movesCount--
+                    /*movesCount--
+                    movesCount--*/
                     println(mat.toString())
                 } else println("Something went wrong.")
                 continue
             }
         }
         Thread.sleep(1000)
+        if (history.movesCount >= mat.size * mat.size) break
         val moveB = playerB.takeMove()
-        movesCount++
-        if (movesCount >= mat.size * mat.size) break
+        /*movesCount++*/
         if (mat.checkWinningSeq(playerB.thisPiece, mat.extractArray())) return 2
-        println(history.record(playerB.thisPiece, moveB))
+        history.record(playerB.thisPiece, moveB)
     }
     return when (mat.checkWinningSeq(mat.extractArray())) {
         playerA.thisPiece -> 1
