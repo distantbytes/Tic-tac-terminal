@@ -3,7 +3,14 @@ package tictacterminal.gameset
 open class Player(
     val thisPiece: Piece,
     private val mat: Mat,
-    val prompts: Array<String?> = arrayOf("It's your turn, take a step: ", "${thisPiece.mark} played at square ", "Congratulations! you won:)")
+    val prompts: Array<String?> = arrayOf(
+        "It's your turn, take a step: ",
+        "${thisPiece.mark} played at square ",
+        "Congratulations! you won:)",
+        null,
+        "Are you sure to end the game? ",
+        "Take a step, then: "
+    )
     ) {
 
     open fun goStep(): Int {
@@ -14,9 +21,8 @@ open class Player(
                 when (blockToPlayAt[0]){
                     -1 -> return -1
                     -4 -> {
-                        if (Toolbox.askYesOrNoQuestion("Are you sure to end the game? ", false)) return -4
-                        else println("Take a step, then: ")
-                        // TODO: 2026/8/25 gotta put this in the prompts array later. there's a problem with it
+                        if (Toolbox.askYesOrNoQuestion(prompts[4] ?: "", false)) return -4
+                        else println(prompts[5] ?: "")
                         continue
                     }
                     else -> {/* do nothing */}
