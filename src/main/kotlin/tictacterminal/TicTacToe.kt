@@ -7,7 +7,7 @@ import kotlin.math.abs
 fun main(args: Array<String>) {
     val mat = newMat()
     val history = History(mat)
-    println("Mat created with size " + mat.size)
+    println("Board size of " + mat.size)
     Thread.sleep(500)
     println(mat.toString())
     val playerA = Player(Piece.PLAYER_A, mat)
@@ -91,7 +91,7 @@ fun gameLoop(mat: Mat, history: History, playerA: Player, playerB: Player): Int 
 }
 
 fun newMat(): Mat {
-    println("Choose the mat size, or leave blank to go with default: ")
+    println("Choose the board size, or leave blank to go with default: ")
     while (true) {
         when (val wantedSizeInString = readLine()!!) {
             "" -> return Mat()
