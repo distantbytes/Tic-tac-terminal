@@ -14,44 +14,61 @@ fun main(args: Array<String>) {
     val playerB = CongMnkBot(mat) as Player
     Thread.sleep(500)
     printKeywordHints(mat.size)
-    when (gameLoop(mat, history, playerA, playerB)) {
-        1 -> {
-            Thread.sleep(1000)
-            println(playerA.prompts[2])
+    while (true) {
+        when (gameLoop(mat, history, playerA, playerB)) {
+            1 -> {
+                Thread.sleep(1000)
+                println(playerA.prompts[2])
+                if (playerB.askWhetherToTakeAMoveBack() && history.takeback()){
+                    println("Took a move back.")
+                    println(mat.toString())
+                    continue
+                } else break
+            }
+            2 -> {
+                Thread.sleep(1000)
+                println(playerB.prompts[2])
+                if (playerA.askWhetherToTakeAMoveBack() && history.takeback()){
+                    println("Took a move back.")
+                    println(mat.toString())
+                    continue
+                } else break
+            }
+            0 -> {
+                Thread.sleep(1000)
+                println("And it's a tie!")
+                break
+            }
+            -4 -> {
+                println("- Game Terminated -")
+                break
+            }
+            else -> {
+                println("- Unexpected result value -")
+                break
+            }
         }
-        2 -> {
-            Thread.sleep(1000)
-            println(playerB.prompts[2])
-        }
-        0 -> {
-            Thread.sleep(1000)
-            println("And it's a tie!")
-        }
-        -4 -> {
-            println("- Game Terminated -")
-            return
-        }
-        else -> println("- Unexpected result value -")
     }
     Thread.sleep(1500)
 }
 
 fun gameLoop(mat: Mat, history: History, playerA: Player, playerB: Player): Int {
     while (true) {
+        /*println(history)*/
         Thread.sleep(1000)
         val moveA = playerA.takeMove()
-        when {
-            moveA.c == null -> {
+        when (moveA.c) {
+            null -> {
                 if (history.movesCount >= mat.size * mat.size) break
-                if (mat.checkWinningSeq(playerA.thisPiece, mat.extractArray())) return 1
                 history.record(playerA.thisPiece, moveA)
+                if (mat.checkWinningSeq(playerA.thisPiece, mat.extractArray())) return 1
             }
-            moveA.c == 'H' -> {
+            'H' -> {
                 printKeywordHints(mat.size)
                 continue
             }
-            moveA.c == 'Q' -> return -4
-            moveA.c == 'T' -> {
+            'Q' -> return -4
+            'T' -> {
                 if (history.takeback()) {
                     println("Took a move back.")
                     println(mat.toString())
@@ -62,8 +79,9 @@ fun gameLoop(mat: Mat, history: History, playerA: Player, playerB: Player): Int 
         Thread.sleep(1000)
         if (history.movesCount >= mat.size * mat.size) break
         val moveB = playerB.takeMove()
-        if (mat.checkWinningSeq(playerB.thisPiece, mat.extractArray())) return 2
         history.record(playerB.thisPiece, moveB)
+        if (mat.checkWinningSeq(playerB.thisPiece, mat.extractArray())) return 2
+        /*println(history.movesCount)*/
     }
     return when (mat.checkWinningSeq(mat.extractArray())) {
         playerA.thisPiece -> 1

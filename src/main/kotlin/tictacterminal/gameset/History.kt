@@ -12,13 +12,16 @@ class History(private val mat: Mat) {
         return when {
             movesRec.isEmpty() -> {
                 movesRec.add(IdentifiedMove(piece, move))
+                /*println(true)*/
                 true
             }
             movesRec[0].piece == piece -> {
+                /*println(false)*/
                 false
             }
             else -> {
                 movesRec.add(0, IdentifiedMove(piece, move))
+                /*println(true)*/
                 true
             }
         }
@@ -36,4 +39,7 @@ class History(private val mat: Mat) {
         return false
     }
 
+    override fun toString(): String {
+        return movesRec.toString()
+    }
 }
