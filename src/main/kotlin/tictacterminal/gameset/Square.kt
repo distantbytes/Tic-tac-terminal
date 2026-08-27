@@ -1,8 +1,6 @@
 package tictacterminal.gameset
 
 class Square(
-/*    val posInCol: Int,
-    val posInRow: Int,*/
     val coords: Array<Int>,
     wantedPiece: Piece = Piece.BLANK
 ) {

@@ -12,16 +12,13 @@ class History(private val mat: Mat) {
         return when {
             movesRec.isEmpty() -> {
                 movesRec.add(IdentifiedMove(piece, move))
-                /*println(movesRec.size)*/
                 true
             }
             movesRec[0].piece == piece -> {
-                /*println(movesRec.size)*/
                 false
             }
             else -> {
                 movesRec.add(0, IdentifiedMove(piece, move))
-                /*println(movesRec.size)*/
                 true
             }
         }
@@ -34,7 +31,6 @@ class History(private val mat: Mat) {
             for ((piece, move) in movesRec.reversed()) {
                 tempMat.playAt(move, piece)
             }
-            /*println(movesRec.size)*/
             return mat.attemptTakeback(tempMat)
         }
         return false

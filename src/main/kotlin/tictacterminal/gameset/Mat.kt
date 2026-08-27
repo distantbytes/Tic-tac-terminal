@@ -60,9 +60,6 @@ class Mat(
         return checkWinningSeq(extracted) == tPiece
     }
 
-/*    fun getMat(): Array<Array<Block>>{
-        return matArray.copyOf()
-    }*/
     fun playAt(move: Move, piece: Piece): Boolean{
     return try {
         matArray[move.rI][move.cI].putDownPiece(piece)
@@ -70,18 +67,6 @@ class Mat(
         println("You're drawing out of bounds!")
         false
     }
-/*        return try {
-            if (matArray[ri][ci] == null) {
-                matArray[ri][ci] = block
-                true
-            } else {
-                println("That spot is already taken.")
-                false
-            }
-        } catch (e: IndexOutOfBoundsException){
-            println("You are drawing out of bound.")
-            false
-        }*/
     }
 
     override fun toString(): String{

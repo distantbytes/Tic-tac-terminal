@@ -37,13 +37,11 @@ fun main(args: Array<String>) {
 }
 
 fun gameLoop(mat: Mat, history: History, playerA: Player, playerB: Player): Int {
-    /*var movesCount = 0*/
     while (true) {
         Thread.sleep(1000)
         val moveA = playerA.takeMove()
         when {
             moveA.c == null -> {
-                /*movesCount++*/
                 if (history.movesCount >= mat.size * mat.size) break
                 if (mat.checkWinningSeq(playerA.thisPiece, mat.extractArray())) return 1
                 history.record(playerA.thisPiece, moveA)
@@ -56,8 +54,6 @@ fun gameLoop(mat: Mat, history: History, playerA: Player, playerB: Player): Int 
             moveA.c == 'T' -> {
                 if (history.takeback()) {
                     println("Took a move back.")
-                    /*movesCount--
-                    movesCount--*/
                     println(mat.toString())
                 } else println("Something went wrong.")
                 continue
@@ -66,7 +62,6 @@ fun gameLoop(mat: Mat, history: History, playerA: Player, playerB: Player): Int 
         Thread.sleep(1000)
         if (history.movesCount >= mat.size * mat.size) break
         val moveB = playerB.takeMove()
-        /*movesCount++*/
         if (mat.checkWinningSeq(playerB.thisPiece, mat.extractArray())) return 2
         history.record(playerB.thisPiece, moveB)
     }

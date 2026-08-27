@@ -39,25 +39,6 @@ open class Player(
                 println(pointOutMove(mat.getSquare(squareToPlayAt)!!))
                 return squareToPlayAt
             }
-/*
-            if (blockToPlayAt.size <= 2 && blockToPlayAt[0] < 0){
-                when (blockToPlayAt[0]){
-                    -1 -> return -1
-                    -4 -> {
-                        if (Toolbox.askYesOrNoQuestion(prompts[4] ?: "", false)) return -4
-                        else println(prompts[5] ?: "")
-                        continue
-                    }
-                    else -> {}
-                }
-            }
-            if (mat.playAt(blockToPlayAt[0], blockToPlayAt[1], thisPiece)){
-                Thread.sleep(100)
-                println(mat.toString())
-                println(pointOutStep(mat.getBlock(blockToPlayAt[0], blockToPlayAt[1])!!))
-                return 0
-            }
-*/
         }
     }
     protected open fun getNextMove(): Move{
