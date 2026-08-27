@@ -18,3 +18,4 @@ Since version 1.2, you can execute an operation by entering keywords:
 | :---: | :---: | :---: |
 | `!` | Quit | v1.2-rc |
 | `?` | List tokens and keywords | v1.2-rc |
+| `^` | Take a move back | v1.3-rc |
