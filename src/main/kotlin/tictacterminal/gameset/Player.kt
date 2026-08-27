@@ -9,7 +9,8 @@ open class Player(
         "You win:)",
         null,
         "Are you sure to ",
-        "Take a move, then: "
+        "Take a move, then: ",
+        "Take a move back? "
     )
     ) {
 
@@ -105,5 +106,10 @@ open class Player(
 
     open fun pointOutMove(playedAt: Square): String{
         return prompts[1] + Toolbox.getIndexAlphabet((playedAt.coords[0] + 1).toByte())!! + playedAt.coords[1] + "\n"
+    }
+
+    open fun askWhetherToTakeAMoveBack(): Boolean{
+        Thread.sleep(500)
+        return Toolbox.askYesOrNoQuestion(prompts[6] ?: "", false)
     }
 }
