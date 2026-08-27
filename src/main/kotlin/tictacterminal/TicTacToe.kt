@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
     val playerA = Player(Piece.PLAYER_A, mat)
     val playerB = CongMnkBot(mat) as Player
     Thread.sleep(500)
-    printTokenHints(mat.size)
+    printKeywordHints(mat.size)
     when (gameLoop(mat, history, playerA, playerB)) {
         1 -> {
             Thread.sleep(1000)
@@ -49,7 +49,7 @@ fun gameLoop(mat: Mat, history: History, playerA: Player, playerB: Player): Int 
                 history.record(playerA.thisPiece, moveA)
             }
             moveA.c == 'H' -> {
-                printTokenHints(mat.size)
+                printKeywordHints(mat.size)
                 continue
             }
             moveA.c == 'Q' -> return -4
@@ -95,9 +95,9 @@ fun newMat(): Mat {
     }
 }
 
-fun printTokenHints(size: Int) {
+fun printKeywordHints(size: Int) {
     require(size in 1..26)
-    println("\nYou can use these tokens for options: ")
+    println("\nYou can use these keywords for options: ")
     print("|  ")
     for ((token, option) in mapOf(
         '?' to "print hints again",
@@ -107,7 +107,7 @@ fun printTokenHints(size: Int) {
         print("$token -> $option  |  ")
         Thread.sleep(100)
     }
-    println("\nTarget the grid cell with the following ones: ")
+    println("\nTarget the grid cell with the following tokens: ")
     if (size > 3) {
         for (eachRow in 1..size) {
             Thread.sleep(100)
@@ -125,5 +125,4 @@ fun printTokenHints(size: Int) {
         }
         print("\n")
     }
-    println()
 }
