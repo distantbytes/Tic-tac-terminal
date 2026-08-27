@@ -38,6 +38,37 @@ class Mat(
         }
     }
 
+    fun extractHalfDiagonals(matrix: Array<Array<Square>>, k: Int, dColP: Boolean, fromTop: Boolean): Array<Array<Square>>{
+        require(matrix.all { it.size == matrix.size })
+        require(k in 1..matrix.size)
+        val extractedDiags = mutableListOf<Array<Square>>()
+
+        if (fromTop){
+            val colRange = if (dColP) 1 until matrix.size else 0 until matrix.size - 1
+            for (eachCol in colRange){
+                val diag = mutableListOf<Square>()
+                var rI = 0
+                var cI = eachCol
+                while (rI < matrix.size && cI in matrix.indices){
+                    diag.add(matrix[rI++][if (dColP) cI++ else cI--])
+                }
+                if (diag.size >= k) extractedDiags.add(diag.toTypedArray())
+            }
+        } else {
+            for (eachRow in 1 until matrix.size){
+                val diag = mutableListOf<Square>()
+                var rI = eachRow
+                var cI = if (dColP) 0 else matrix.size - 1
+                while (rI < matrix.size && cI in matrix.indices){
+                    diag.add(matrix[rI++][if (dColP) cI++ else cI--])
+                }
+                if (diag.size >= k) extractedDiags.add(diag.toTypedArray())
+            }
+        }
+
+        return extractedDiags.sortedByDescending { it.size }.toTypedArray()
+    }
+
     fun checkWinningSeq(extracted: Array<Array<Array<Square>>>): Piece?{
         for (eachDir in extracted){
             for (eachLined in eachDir){
