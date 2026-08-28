@@ -27,10 +27,12 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
                 searchForStraightThree(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
                 searchForFour(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
                 searchForFour(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
-                searchForBrokenThree(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
+/*                searchForBrokenThree(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
                 searchForBrokenThree(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
                 searchForBrokenThree(eachLined.reversedArray(), Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
-                searchForBrokenThree(eachLined.reversedArray(), thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
+                searchForBrokenThree(eachLined.reversedArray(), thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }*/
+                searchForLiveThree(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
+                searchForLiveThree(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
             }
         }
         //now we must sort out the square with the largest map value, and return its coords
@@ -104,7 +106,7 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
             null
         }
     }
-    private fun searchForBrokenThree(array: Array<Square>, mTarget: Piece, k: Int): Square?{
+/*    private fun searchForBrokenThree(array: Array<Square>, mTarget: Piece, k: Int): Square?{
         require(mTarget != Piece.BLANK)
         require(k in 4..array.size)
         //the sequence of a straight three is: * * _ *
@@ -117,7 +119,7 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
                     seq.add(eachSquare)
                 }
                 Piece.BLANK -> {
-                    /*if (seq.isNotEmpty()) */seq.add(eachSquare)
+                    *//*if (seq.isNotEmpty()) *//*seq.add(eachSquare)
                 }
                 else -> seq.clear()
             }
@@ -125,9 +127,7 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
         return if (seq.size == k) {
             seq.filter { it.piece == Piece.BLANK }[0]
         } else null
-    }
-
-
+    }*/
     private fun searchForFour(array: Array<Square>, mTarget: Piece, k: Int): Square?{
         require(mTarget != Piece.BLANK)
         require(k in 4..array.size)
@@ -151,6 +151,34 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
             }
         }
         return if (seq.size == k) seq.singleOrNull { it.piece == Piece.BLANK } else null
+    }
+    private fun searchForLiveThree(array: Array<Square>, mTarget: Piece, k: Int): Square?{
+        require(mTarget != Piece.BLANK)
+        require(k in 4..array.size)
+
+        val seq = mutableListOf<Square>()
+        for (eachSquare in array) {
+            seq.add(eachSquare)
+            if (   // * _ * *
+                seq.size == k - 1
+                && seq.count { it.piece == Piece.BLANK } == 1
+                && seq[0].piece == mTarget
+                && seq.last().piece == mTarget
+            ) return seq.singleOrNull { it.piece == Piece.BLANK }
+            else if (seq.size == k - 1) seq.removeAt(0)
+        }
+        for (eachSquare in array) {
+            seq.add(eachSquare)
+            if (        // _ * * * _
+                seq.size == k
+                && seq.count { it.piece == mTarget } == k - 2
+                && seq.none { it.piece == Piece.PLAYER_B }
+                && seq[0].piece == Piece.BLANK
+                && seq.last().piece == Piece.BLANK
+            ) return seq.filter { it.piece == Piece.BLANK }.shuffled()[0]
+            else if (seq.size == k) seq.removeAt(0)
+        }
+        return null
     }
 
     private fun thinkingDelay(){
