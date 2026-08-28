@@ -80,7 +80,7 @@ class BigMat(size: Int, override val k: Int): Mat(size) {
                     /*if (seq.last() != seq[0]) seq.clear()
                     if (seq.size == k) return seq[0]*/
                     if (seq.size == k) {
-                        if (seq.all { it == seq[0] }) return seq[0]
+                        if (seq.all { it == seq[0] && it != Piece.BLANK }) return seq[0]
                         else seq.removeAt(0)
                     }
                 }
