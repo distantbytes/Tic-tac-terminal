@@ -68,20 +68,25 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
         //the sequence of a straight three is: _ * * * _
         val seq = mutableListOf<Square>()
         for (eachSquare in array){
+            if (seq.size >= k) break
             when (eachSquare.piece){
                 Piece.BLANK -> {
-                    if (seq.size == 0 || seq.size == k - 1) seq.add(eachSquare)
-                    else seq.clear()
+                    if (seq.isEmpty() || seq.size == k - 1) seq.add(eachSquare)
+                    else {
+                        seq.clear()
+                        seq.add(eachSquare)
+                    }
                 }
                 mTarget -> {
                     if (seq.size >= 1) seq.add(eachSquare)
                 }
                 else -> {
-                    if (seq.size != 0) seq.clear()
+                    /*if (seq.size != 0) */
+                    seq.clear()
                 }
             }
         }
-        return if (seq.size == k && seq[0] == seq[k - 1]) {
+        return if (seq.size == k) {
             seq.filter { it.piece == Piece.BLANK }.shuffled()[0]
         } else {
             null
@@ -94,9 +99,14 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
 
         val seq = mutableListOf<Square>()
         for (eachSquare in array){
+            if (seq.size >= k) break
             when (eachSquare.piece){
                 Piece.BLANK -> {
                     if (seq.none { it.piece == Piece.BLANK }) seq.add(eachSquare)
+                    else {
+                        seq.clear()
+                        seq.add(eachSquare)
+                    }
                 }
                 mTarget -> {
                     if (seq.size < k) seq.add(eachSquare)
