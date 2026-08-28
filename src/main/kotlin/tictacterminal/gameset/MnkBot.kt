@@ -2,7 +2,7 @@ package tictacterminal.gameset
 
 import kotlin.random.Random
 
-class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
+class MnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
     null,
     "X played at square ",
     "Too bad, loser:(",
@@ -16,23 +16,26 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
         thinkingDelay()
         for (eachDir in extracted){
             for (eachLined in eachDir){
-                findAlmostWinningSeq(eachLined, Piece.PLAYER_A, Piece.BLANK)?.let {
+                findAlmostWinningSeq(eachLined, Piece.PLAYER_A)?.let {
                     //only deal with the the situations when findAlmostWinningSeq returns a valid square
                     candidates.put(it, (candidates[it] ?: 0) + 1) //if the square already exists in candidates, add its map value by 1
                 }
-                findAlmostWinningSeq(eachLined, thisPiece, Piece.BLANK)?.let {
+                findAlmostWinningSeq(eachLined, thisPiece)?.let {
                     candidates.put(it, (candidates[it] ?: 0) + 1)
                 }
-                searchForStraightThree(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
-                searchForStraightThree(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
-                searchForFour(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
-                searchForFour(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
-/*                searchForBrokenThree(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
-                searchForBrokenThree(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
-                searchForBrokenThree(eachLined.reversedArray(), Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
-                searchForBrokenThree(eachLined.reversedArray(), thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }*/
-                searchForLiveThree(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
-                searchForLiveThree(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
+                if (mat is BigMat){
+                    searchForStraightThree(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
+                    searchForStraightThree(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
+                    searchForFour(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
+                    searchForFour(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
+/*                    searchForBrokenThree(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
+                    searchForBrokenThree(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
+                    searchForBrokenThree(eachLined.reversedArray(), Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
+                    searchForBrokenThree(eachLined.reversedArray(), thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }*/
+                    searchForLiveThree(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
+                    searchForLiveThree(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
+
+                }
             }
         }
         //now we must sort out the square with the largest map value, and return its coords
@@ -51,12 +54,12 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
         }
     }
 
-    private fun findAlmostWinningSeq(array: Array<Square>, mTarget: Piece, mOneLeft: Piece): Square?{
+    private fun findAlmostWinningSeq(array: Array<Square>, mTarget: Piece): Square?{
         var countLeft = 0
         var oneLeft: Square? = null
         for (eachSquare in array){
             when (eachSquare.piece){
-                mOneLeft -> {   //when the same enum value as mOneLeft is matched
+                Piece.BLANK -> {   //when the same enum value as mOneLeft is matched
                     countLeft++
                     if (countLeft > 1) return null  //check countLeft right away
                     oneLeft = eachSquare

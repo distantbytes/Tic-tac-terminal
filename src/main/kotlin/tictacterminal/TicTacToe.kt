@@ -9,7 +9,7 @@ fun main(args: Array<String>) {
     Thread.sleep(500)
     println(mat.toString())
     val playerA = Player(Piece.PLAYER_A, mat)
-    val playerB = CongMnkBot(mat) as Player
+    val playerB = MnkBot(mat) as Player
     Thread.sleep(500)
     printKeywordHints(mat.size, mat.k)
     while (true) {
@@ -120,8 +120,8 @@ fun newMat(): Mat {
         print("Your choice: \t")
         when (readLine()!!.toString()) {
             "1" -> return Mat(3)
-            "2" -> return Mat(15, 5)
-            "3" -> return Mat(13, 5)
+            "2" -> return BigMat(15, 5)
+            "3" -> return BigMat(13, 5)
             else -> println("Enter one of the options!")
         }
     }
