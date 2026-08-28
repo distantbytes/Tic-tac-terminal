@@ -4,7 +4,7 @@ open class Player(
     val thisPiece: Piece,
     private val mat: Mat,
     val prompts: Array<String?> = arrayOf(
-        "It's your turn, take a move: ",
+        "It's your turn, take a move: \t",
         "${thisPiece.mark} played at square ",
         "You win:)",
         null,
@@ -15,7 +15,7 @@ open class Player(
     ) {
 
     open fun takeMove(): Move {
-        prompts[0]?.let { println(it) }
+        prompts[0]?.let { print(it) }
         while (true) {
             val squareToPlayAt = getNextMove()
             if (squareToPlayAt.c != null) {
@@ -54,9 +54,9 @@ open class Player(
             try {
                 when (  //match the value of resolved,
                     val resolved =
-                        if (Toolbox.getAlphabetIndex(reply[0]) != null) resolveCoordsRef(reply[0], reply[1].toString().toInt())
+                        if (Toolbox.getAlphabetIndex(reply[0]) != null) resolveCoordsRef(reply[0], reply.drop(1).toString().toInt())
                         //if the first character in reply isn't an alphabet letter, we'll get null from getAlphabetIndex
-                        else resolveCoordsRef(null, reply[0].toString().toInt())
+                        else resolveCoordsRef(null, reply.toInt())
                         //pass either an alphabet character plus an integer, or an integer alone and leave character null
                 ) {
                     null -> {
@@ -98,14 +98,14 @@ open class Player(
     private fun askPlayerForInput(): String{
         while (true){
             val playerInput = readLine()
-            if (playerInput != null && playerInput.length in 1..2) return playerInput
+            if (playerInput != null && playerInput.length in 1..3) return playerInput
             //ensure that playerInput as string isn't null and is in proper length
             else println("That's not a valid token! -1")
         }
     }
 
     open fun pointOutMove(playedAt: Square): String{
-        return prompts[1] + Toolbox.getIndexAlphabet((playedAt.coords[0] + 1).toByte())!! + playedAt.coords[1] + "\n"
+        return prompts[1] + Toolbox.getIndexAlphabet((playedAt.coords[0] + 1).toByte())!! + (playedAt.coords[1] + 1) + "\n"
     }
 
     open fun askWhetherToTakeAMoveBack(): Boolean{

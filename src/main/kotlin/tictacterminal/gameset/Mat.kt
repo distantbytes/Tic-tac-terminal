@@ -2,13 +2,14 @@ package tictacterminal.gameset
 
 import java.lang.IndexOutOfBoundsException
 
-class Mat(
+open class Mat(
     val size: Int = 3
 ) {
     var matArray = createMat(size)
         private set
+    open val k = size
 
-    fun extractArray(): Array< //contains 3 arrays, each for rows, columns and diagonals
+    open fun extractArray(): Array< //contains 3 arrays, each for rows, columns and diagonals
             Array< //contains the same number of arrays as val size, each array is a row, column or diagonal
                     Array<Square> //row, column or diagonal, contains nullable squares
                     >
@@ -38,7 +39,7 @@ class Mat(
         }
     }
 
-    fun checkWinningSeq(extracted: Array<Array<Array<Square>>>): Piece?{
+    open fun checkWinningSeq(extracted: Array<Array<Array<Square>>>): Piece?{
         for (eachDir in extracted){
             for (eachLined in eachDir){
                 val countSamePieces = mutableMapOf(Piece.PLAYER_A to 0, Piece.PLAYER_B to 0)
