@@ -3,6 +3,7 @@ package tictacterminal.gameset
 import java.lang.IndexOutOfBoundsException
 
 class Mat(
+    // TODO: 2026/8/28 make a subclass for K < M,N games 
     val size: Int = 3,
     val k: Int = if (size <= 4) size else 5
 ) {
