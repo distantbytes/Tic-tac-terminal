@@ -23,10 +23,14 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
                 findAlmostWinningSeq(eachLined, thisPiece, Piece.BLANK)?.let {
                     candidates.put(it, (candidates[it] ?: 0) + 1)
                 }
-                searchForLiveThree(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
-                searchForLiveThree(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
+                searchForStraightThree(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
+                searchForStraightThree(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
                 searchForFour(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
                 searchForFour(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
+                searchForBrokenThree(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
+                searchForBrokenThree(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
+                searchForBrokenThree(eachLined.reversedArray(), Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
+                searchForBrokenThree(eachLined.reversedArray(), thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
             }
         }
         //now we must sort out the square with the largest map value, and return its coords
@@ -61,15 +65,14 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
         }
         return oneLeft  //no need for an if check
     }
-    private fun searchForLiveThree(array: Array<Square>, mTarget: Piece, k: Int): Square?{
+    private fun searchForStraightThree(array: Array<Square>, mTarget: Piece, k: Int): Square?{
         require(mTarget != Piece.BLANK)
-        // TODO: 2026/8/27 deal with straight threes only, and leave broken three for later updates
         require(k in 4..array.size)
         //the sequence of a straight three is: _ * * * _
         val seq = mutableListOf<Square>()
-        for (eachSquare in array){
-            if (seq.size >= k) break
-            when (eachSquare.piece){
+        for (eachSquare in array) {
+            if (seq.size == k) break
+            when (eachSquare.piece) {
                 Piece.BLANK -> {
                     if (seq.isEmpty() || seq.size == k - 1) seq.add(eachSquare)
                     else {
@@ -86,12 +89,45 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
                 }
             }
         }
+/*            when (eachSquare.piece){
+                Piece.BLANK -> seq.add(eachSquare)
+                mTarget -> seq.add(eachSquare)
+                else -> seq.clear()
+            }
+            if (seq.size == k && seq.count { it.piece == mTarget } == k - 2) break
+            else if (seq.isNotEmpty()) seq.removeAt(0)
+            else continue
+        }*/
         return if (seq.size == k) {
             seq.filter { it.piece == Piece.BLANK }.shuffled()[0]
         } else {
             null
         }
     }
+    private fun searchForBrokenThree(array: Array<Square>, mTarget: Piece, k: Int): Square?{
+        require(mTarget != Piece.BLANK)
+        require(k in 4..array.size)
+        //the sequence of a straight three is: * * _ *
+        val seq = mutableListOf<Square>()
+        for (eachSquare in array){
+            if (seq.size == k - 1 && seq.count { it.piece == mTarget } == 3 && seq.singleOrNull { it.piece == Piece.BLANK } != null) break
+            else if (seq.size == k - 1) seq.removeAt(0)
+            when (eachSquare.piece){
+                mTarget -> {
+                    seq.add(eachSquare)
+                }
+                Piece.BLANK -> {
+                    /*if (seq.isNotEmpty()) */seq.add(eachSquare)
+                }
+                else -> seq.clear()
+            }
+        }
+        return if (seq.size == k) {
+            seq.filter { it.piece == Piece.BLANK }[0]
+        } else null
+    }
+
+
     private fun searchForFour(array: Array<Square>, mTarget: Piece, k: Int): Square?{
         require(mTarget != Piece.BLANK)
         require(k in 4..array.size)

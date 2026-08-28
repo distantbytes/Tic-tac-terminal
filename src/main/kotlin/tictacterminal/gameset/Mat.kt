@@ -77,18 +77,26 @@ class Mat(
     fun checkWinningSeq(extracted: Array<Array<Array<Square>>>): Piece?{
         for (eachDir in extracted){
             for (eachLined in eachDir){
-                val countSamePieces = mutableMapOf(Piece.PLAYER_A to 0, Piece.PLAYER_B to 0)
+                /*val countSamePieces = mutableMapOf(Piece.PLAYER_A to 0, Piece.PLAYER_B to 0)
                 for (eachSquare in eachLined){
                     when(eachSquare.piece){
                         Piece.PLAYER_A -> countSamePieces[Piece.PLAYER_A] = countSamePieces[Piece.PLAYER_A]!! + 1
                         Piece.PLAYER_B -> countSamePieces[Piece.PLAYER_B] = countSamePieces[Piece.PLAYER_B]!! + 1
                         Piece.BLANK -> continue
                     }
-                }
-                for ((piece, int) in countSamePieces){
+                }*/
+                /*for ((piece, int) in countSamePieces){
                     if (int == k) return piece
+                }*/
+                val seq = mutableListOf<Piece>()
+                for (eachSquare in eachLined){
+                    seq.add(eachSquare.piece)
+                    if (seq.last() != seq[0]) seq.clear()
+                    if (seq.size == k) return seq[0]
                 }
+
             }
+
         }
         return null
     }
