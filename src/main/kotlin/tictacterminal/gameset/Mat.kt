@@ -91,8 +91,12 @@ class Mat(
                 val seq = mutableListOf<Piece>()
                 for (eachSquare in eachLined){
                     seq.add(eachSquare.piece)
-                    if (seq.last() != seq[0]) seq.clear()
-                    if (seq.size == k) return seq[0]
+                    /*if (seq.last() != seq[0]) seq.clear()
+                    if (seq.size == k) return seq[0]*/
+                    if (seq.size == k) {
+                        if (seq.all { it == seq[0] }) return seq[0]
+                        else seq.removeAt(0)
+                    }
                 }
 
             }
