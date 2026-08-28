@@ -1,8 +1,6 @@
 package tictacterminal
 
 import tictacterminal.gameset.*
-import java.lang.NumberFormatException
-import kotlin.math.abs
 
 fun main(args: Array<String>) {
     val mat = newMat()
@@ -13,7 +11,7 @@ fun main(args: Array<String>) {
     val playerA = Player(Piece.PLAYER_A, mat)
     val playerB = CongMnkBot(mat) as Player
     Thread.sleep(500)
-    printKeywordHints(mat.size)
+    printKeywordHints(mat.size, mat.k)
     while (true) {
         when (gameLoop(mat, history, playerA, playerB)) {
             1 -> {
@@ -91,26 +89,48 @@ fun gameLoop(mat: Mat, history: History, playerA: Player, playerB: Player): Int 
 }
 
 fun newMat(): Mat {
-    println("Choose the board size, or leave blank to go with default: ")
+    /*println("Choose the board size, or leave blank to go with default: ")
     while (true) {
         when (val wantedSizeInString = readLine()!!) {
             "" -> return Mat()
             else -> {
                 try {
                     val wantedSize = wantedSizeInString.toInt()
-                    /*if (abs(wantedSize) in 3..6) return Mat(abs(wantedSize))
-                    else println("Please enter an integer between 3 and 6.")*/
+                    *//*if (abs(wantedSize) in 3..6) return Mat(abs(wantedSize))
+                    else println("Please enter an integer between 3 and 6.")*//*
                     return Mat(abs(wantedSize))
                 } catch (e: NumberFormatException) {
                     println("That's not an integer, dumbhead!")
                 }
             }
         }
+    }*/
+    println("Choose a board to play on: [1, 2, 3]")
+    for (textToPrint in arrayOf(
+        arrayOf("1", "Classic Tic-tac-toe   ", "3-3-3"),
+        arrayOf("2", "Standard Five-in-a-row", "15-15-5"),
+        arrayOf("3", "Simple Five-in-a-row  ", "13-13-5")
+    )) {
+        print(textToPrint[0] + " |\t")
+        print(textToPrint[1] + "\t\t")
+        print(textToPrint[2] + "\n")
+    }
+    while (true) {
+        Thread.sleep(670)
+        print("Your choice: \t")
+        when (readLine()!!.toString()) {
+            "1" -> return Mat(3)
+            "2" -> return Mat(15, 5)
+            "3" -> return Mat(13, 5)
+            else -> println("Enter one of the options!")
+        }
     }
 }
 
-fun printKeywordHints(size: Int) {
+fun printKeywordHints(size: Int, k: Int = 3) {
     require(size in 1..26)
+    println("\nGet $k in a row to win!")
+    Thread.sleep(1000)
     println("\nYou can use these keywords for options: ")
     print("|  ")
     for ((token, option) in mapOf(
