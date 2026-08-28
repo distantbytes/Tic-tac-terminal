@@ -3,7 +3,8 @@ package tictacterminal.gameset
 import java.lang.IndexOutOfBoundsException
 
 class Mat(
-    val size: Int = 3
+    val size: Int = 3,
+    val k: Int = if (size <= 4) size else 5
 ) {
     var matArray = createMat(size)
         private set
@@ -13,7 +14,7 @@ class Mat(
                     Array<Square> //row, column or diagonal, contains nullable squares
                     >
             >{
-        require(size in 3..6)
+        /*require(size in 3..6)*/
 
         //extract all lines and throw them in an array
         val rows = Array(size){ row -> matArray[row].copyOf() }
@@ -22,13 +23,17 @@ class Mat(
         val cols = Array(size){ col -> Array(size){ row -> matArray[row][col] } }
 
         // and the diagonals
-        val diags = arrayOf(
+        val diags = mutableListOf(
             Array(size){ i -> matArray[i][i] }, //this is the main diag, from top-left to bottom-right, change index in both ways
             Array(size){ i -> matArray[i][size - (i + 1)] } // this is the anti diag, from top-right to bottom-left, change second index in the opposite direction
         )
+        diags.addAll(extractHalfDiagonals(matArray, k, true, true))
+        diags.addAll(extractHalfDiagonals(matArray, k, true, false))
+        diags.addAll(extractHalfDiagonals(matArray, k, false, true))
+        diags.addAll(extractHalfDiagonals(matArray, k, false, false))
 
         //finally, put the three arrays into one
-        return arrayOf(rows, cols, diags)
+        return arrayOf(rows, cols, diags.toTypedArray())
     }
     fun getSquare(move: Move): Square?{
         return try {
@@ -38,7 +43,7 @@ class Mat(
         }
     }
 
-    fun extractHalfDiagonals(matrix: Array<Array<Square>>, k: Int, dColP: Boolean, fromTop: Boolean): Array<Array<Square>>{
+    private fun extractHalfDiagonals(matrix: Array<Array<Square>>, k: Int, dColP: Boolean, fromTop: Boolean): Array<Array<Square>>{
         require(matrix.all { it.size == matrix.size })
         require(k in 1..matrix.size)
         val extractedDiags = mutableListOf<Array<Square>>()
@@ -81,7 +86,7 @@ class Mat(
                     }
                 }
                 for ((piece, int) in countSamePieces){
-                    if (int == eachLined.size) return piece
+                    if (int == k) return piece
                 }
             }
         }

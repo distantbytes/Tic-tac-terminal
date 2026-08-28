@@ -23,6 +23,10 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
                 findAlmostWinningSeq(eachLined, thisPiece, Piece.BLANK)?.let {
                     candidates.put(it, (candidates[it] ?: 0) + 1)
                 }
+                searchForLiveThree(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
+                searchForLiveThree(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
+                searchForFour(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
+                searchForFour(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
             }
         }
         //now we must sort out the square with the largest map value, and return its coords
@@ -56,6 +60,51 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
             }
         }
         return oneLeft  //no need for an if check
+    }
+    private fun searchForLiveThree(array: Array<Square>, mTarget: Piece, k: Int): Square?{
+        require(mTarget != Piece.BLANK)
+        // TODO: 2026/8/27 deal with straight threes only, and leave broken three for later updates
+        require(k in 4..array.size)
+        //the sequence of a straight three is: _ * * * _
+        val seq = mutableListOf<Square>()
+        for (eachSquare in array){
+            when (eachSquare.piece){
+                Piece.BLANK -> {
+                    if (seq.size == 0 || seq.size == k - 1) seq.add(eachSquare)
+                    else seq.clear()
+                }
+                mTarget -> {
+                    if (seq.size >= 1) seq.add(eachSquare)
+                }
+                else -> {
+                    if (seq.size != 0) seq.clear()
+                }
+            }
+        }
+        return if (seq.size == k && seq[0] == seq[k - 1]) {
+            seq.filter { it.piece == Piece.BLANK }.shuffled()[0]
+        } else {
+            null
+        }
+    }
+    private fun searchForFour(array: Array<Square>, mTarget: Piece, k: Int): Square?{
+        require(mTarget != Piece.BLANK)
+        require(k in 4..array.size)
+        //the sequence of an open four is: * * * * _
+
+        val seq = mutableListOf<Square>()
+        for (eachSquare in array){
+            when (eachSquare.piece){
+                Piece.BLANK -> {
+                    if (seq.none { it.piece == Piece.BLANK }) seq.add(eachSquare)
+                }
+                mTarget -> {
+                    if (seq.size < k) seq.add(eachSquare)
+                }
+                else -> seq.clear()
+            }
+        }
+        return if (seq.size == k) seq.singleOrNull { it.piece == Piece.BLANK } else null
     }
 
     private fun thinkingDelay(){

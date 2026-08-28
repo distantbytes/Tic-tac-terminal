@@ -98,8 +98,9 @@ fun newMat(): Mat {
             else -> {
                 try {
                     val wantedSize = wantedSizeInString.toInt()
-                    if (abs(wantedSize) in 3..6) return Mat(abs(wantedSize))
-                    else println("Please enter an integer between 3 and 6.")
+                    /*if (abs(wantedSize) in 3..6) return Mat(abs(wantedSize))
+                    else println("Please enter an integer between 3 and 6.")*/
+                    return Mat(abs(wantedSize))
                 } catch (e: NumberFormatException) {
                     println("That's not an integer, dumbhead!")
                 }
