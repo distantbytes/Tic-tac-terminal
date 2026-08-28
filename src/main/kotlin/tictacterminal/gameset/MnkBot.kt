@@ -182,7 +182,7 @@ class CongMnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
     }
 
     private fun thinkingDelay(){
-        Toolbox.printFixedTimeLoadingEllipsis(5, (250 + mat.size * 50), prompts[3] ?: "", '.')
+        Toolbox.printFixedTimeLoadingEllipsis(5, (250 + mat.size * 50) / 2, prompts[3] ?: "", '.')
     }
 
     override fun askWhetherToTakeAMoveBack(): Boolean { return false }
