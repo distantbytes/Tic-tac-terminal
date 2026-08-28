@@ -39,7 +39,8 @@ class MnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
             }
         }
         //now we must sort out the square with the largest map value, and return its coords
-        return if (candidates.isNotEmpty()) Move(Toolbox.sortByValueDescendingWithRandomTies(candidates).keys.first().coords[0], Toolbox.sortByValueDescendingWithRandomTies(candidates).keys.first().coords[1])
+        val candidatesSorted = Toolbox.sortByValueDescendingWithRandomTies(candidates).keys
+        return if (candidates.isNotEmpty()) Move(candidatesSorted.first().coords[0], candidatesSorted.first().coords[1])
         else {
             val emptySpots = mutableListOf<Square>()
             for (eachRow in mat.matArray){
