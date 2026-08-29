@@ -1,6 +1,6 @@
-package tictacterminal
+package page.codeberg.distantbytes.tictacterminal
 
-import tictacterminal.gameset.*
+import page.codeberg.distantbytes.tictacterminal.gameset.*
 
 fun main(args: Array<String>) {
     val mat = newMat()
@@ -125,24 +125,6 @@ fun printKeywordHints(size: Int, k: Int = 3) {
         print("$token -> $option  |  ")
         Thread.sleep(100)
     }
-/*    println("\nTarget the grid cell with the following tokens: ")
-    if (size > 3) {
-        for (eachRow in 1..size) {
-            Thread.sleep(100)
-            for (i in 1..size) {
-                print(" " + Toolbox.getIndexAlphabet(eachRow.toByte()) + i + " ")
-            }
-            print("\n")
-        }
-        println()
-    } else {
-        for (i in arrayOf(7, 8, 9, 4, 5, 6, 1, 2, 3)) {
-            Thread.sleep(100)
-            print(" $i ")
-            if (i % 3 == 0) print("\n")
-        }
-        print("\n")
-    }*/
     if (size <= 3) {
         println("\nTarget a grid with these coordinates: ")
         for (i in arrayOf(7, 8, 9, 4, 5, 6, 1, 2, 3)){

@@ -1,5 +1,6 @@
-package tictacterminal.gameset
+package page.codeberg.distantbytes.tictacterminal.gameset
 
+import page.codeberg.distantbytes.tictacterminal.toolbox.getIndexAlphabet
 import java.lang.IndexOutOfBoundsException
 
 open class Mat(
@@ -80,7 +81,7 @@ open class Mat(
             var count = 1
             for (eachRow in matArray) {
                 if (boolean) matForPrint += "\n"
-                matForPrint += (Toolbox.getIndexAlphabet(count++.toByte()).toString() + "\t")
+                matForPrint += (getIndexAlphabet(count++.toByte()).toString() + "\t")
                 for (eachSquare in eachRow) {
                     matForPrint += eachSquare.toString()
                 }
@@ -104,7 +105,7 @@ open class Mat(
 
     private fun createMat(size: Int): Array<Array<Square>>{
         //magic code! Don't touch!
-        val array: Array<Array<Square>> = Array(size) { Array(size){Square(emptyArray())} }
+        val array: Array<Array<Square>> = Array(size) { Array(size){ Square(emptyArray()) } }
         for ((rowCount, eachRow) in array.withIndex()){
             for ((itemCount) in eachRow.withIndex()){
                 array[rowCount][itemCount] = Square(arrayOf(rowCount, itemCount))

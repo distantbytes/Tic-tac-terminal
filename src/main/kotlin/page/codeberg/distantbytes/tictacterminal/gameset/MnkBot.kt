@@ -1,5 +1,7 @@
-package tictacterminal.gameset
+package page.codeberg.distantbytes.tictacterminal.gameset
 
+import page.codeberg.distantbytes.tictacterminal.toolbox.printFixedTimeLoadingEllipsis
+import page.codeberg.distantbytes.tictacterminal.toolbox.sortByValueDescendingWithRandomTies
 import kotlin.random.Random
 
 class MnkBot(private val mat: Mat, override val thisPiece: Piece = Piece.PLAYER_B): Player(thisPiece, mat, arrayOf(
@@ -9,7 +11,7 @@ class MnkBot(private val mat: Mat, override val thisPiece: Piece = Piece.PLAYER_
     "Thinking"
 )) {
 
-    override fun getNextMove(): Move{  //we will return a Move object to represent the coords of the square to play on
+    override fun getNextMove(): Move {  //we will return a Move object to represent the coords of the square to play on
         val extracted = mat.extractArray()
         val candidates: MutableMap<Square, Int> = mutableMapOf()    //create an empty map for candidate options
         //find all the almost winning sequences and add the only remaining available square on that line to the candidates
@@ -35,7 +37,7 @@ class MnkBot(private val mat: Mat, override val thisPiece: Piece = Piece.PLAYER_
             }
         }
         //now we must sort out the square with the largest map value, and return its coords
-        val candidatesSorted = Toolbox.sortByValueDescendingWithRandomTies(candidates).keys
+        val candidatesSorted = sortByValueDescendingWithRandomTies(candidates).keys
         return if (candidates.isNotEmpty()) Move(candidatesSorted.first().coords[0], candidatesSorted.first().coords[1])
         else {
             val emptySpots = mutableListOf<Square>()
@@ -150,7 +152,7 @@ class MnkBot(private val mat: Mat, override val thisPiece: Piece = Piece.PLAYER_
     }
 
     private fun thinkingDelay(){
-        Toolbox.printFixedTimeLoadingEllipsis(5, (250 + mat.size * 50) / 2, prompts[3] ?: "", '.')
+        printFixedTimeLoadingEllipsis(5, (250 + mat.size * 50) / 2, prompts[3] ?: "", '.')
     }
 
     override fun askWhetherToTakeAMoveBack(): Boolean { return false }

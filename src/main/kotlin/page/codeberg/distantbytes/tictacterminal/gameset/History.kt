@@ -1,4 +1,4 @@
-package tictacterminal.gameset
+package page.codeberg.distantbytes.tictacterminal.gameset
 
 // TODO: 2026/8/26 add comments for this file
 class History(private val mat: Mat) {
