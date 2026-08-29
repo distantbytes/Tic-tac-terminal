@@ -73,17 +73,20 @@ open class Mat(
 
     override fun toString(): String{
         if (size > 3) {
-            var matForPrint = "\t"
+            var matForPrint = "\n\t \u3000"
             var boolean = false
             for (i in 1..size)
                 matForPrint += if (i <= 9) " $i\u3000" else "$i\u3000"
+            matForPrint += "\n\t┏"
+            for (i in 2..size)
+                matForPrint += "—-—-"
             matForPrint += "\n"
             var count = 1
             for (eachRow in matArray) {
                 if (boolean) matForPrint += "\n"
-                matForPrint += (getIndexAlphabet(count++.toByte()).toString() + "\t")
+                matForPrint += (getIndexAlphabet(count++.toByte()).toString() + "\t┃ ")
                 for (eachSquare in eachRow) {
-                    matForPrint += eachSquare.toString()
+                    matForPrint += if (eachSquare.piece != Piece.BLANK) " $eachSquare " else /*" ＋ "*/ " ・ "
                 }
                 boolean = true
             }
@@ -94,7 +97,7 @@ open class Mat(
             for (eachRow in matArray){
                 if (boolean) matForPrint += "\n"
                 for (eachSquare in eachRow){
-                    matForPrint += eachSquare.toString()
+                    matForPrint += "[$eachSquare] "
                 }
                 boolean = true
             }
