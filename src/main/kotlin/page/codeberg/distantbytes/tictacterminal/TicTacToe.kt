@@ -89,19 +89,16 @@ fun gameLoop(mat: Mat, history: History, playerA: Player, playerB: Player): Int 
 }
 
 fun newMat(): Mat {
-    println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-    println("┃ Choose a board to play on: [1, 2, 3]      ┃")
-    println("┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫")
+    println("Choose a board to play on: [1, 2, 3]")
     for (textToPrint in arrayOf(
-        arrayOf("1", "Classic Tic-tac-toe   ", "3-3-3  "),
+        arrayOf("1", "Classic Tic-tac-toe   ", "3-3-3"),
         arrayOf("2", "Standard Five-in-a-row", "15-15-5"),
         arrayOf("3", "Simple Five-in-a-row  ", "13-13-5")
     )) {
-        print("┃ " + textToPrint[0] + " |\t")
+        print(textToPrint[0] + " |\t")
         print(textToPrint[1] + "\t\t")
-        print(textToPrint[2] + " ┃\n")
+        print(textToPrint[2] + "\n")
     }
-    println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
     while (true) {
         Thread.sleep(670)
         print("Your choice: \t")
@@ -119,17 +116,15 @@ fun printKeywordHints(size: Int, k: Int = 3) {
     println("\nGet $k in a row to win!")
     Thread.sleep(1000)
     println("\nYou can use these keywords for options: ")
-    println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-    print("┃  ")
+    print("|  ")
     for ((token, option) in mapOf(
         '?' to "print hints again",
         '^' to "take a move back",
         '!' to "quit game and exit"
     )) {
-        print("$token -> $option  ┃  ")
+        print("$token -> $option  |  ")
         Thread.sleep(100)
     }
-    println("\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
     if (size <= 3) {
         println("\nTarget a grid with these coordinates: ")
         for (i in arrayOf(7, 8, 9, 4, 5, 6, 1, 2, 3)){
