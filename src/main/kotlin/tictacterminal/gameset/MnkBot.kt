@@ -4,12 +4,12 @@ import kotlin.random.Random
 
 class MnkBot(private val mat: Mat, override val thisPiece: Piece = Piece.PLAYER_B): Player(thisPiece, mat, arrayOf(
     null,
-    "${thisPiece.mark} played at square ",
+    "${thisPiece.mark} played on square ",
     "Too bad, loser:(",
     "Thinking"
 )) {
 
-    override fun getNextMove(): Move{  //we will return a Move object to represent the coords of the square to play at
+    override fun getNextMove(): Move{  //we will return a Move object to represent the coords of the square to play on
         val extracted = mat.extractArray()
         val candidates: MutableMap<Square, Int> = mutableMapOf()    //create an empty map for candidate options
         //find all the almost winning sequences and add the only remaining available square on that line to the candidates
@@ -47,7 +47,7 @@ class MnkBot(private val mat: Mat, override val thisPiece: Piece = Piece.PLAYER_
             }
             emptySpots.shuffle(Random.Default)
             Move(emptySpots[0].coords[0], emptySpots[1].coords[1])
-            //play at random square
+            //play on random square
         }
     }
 

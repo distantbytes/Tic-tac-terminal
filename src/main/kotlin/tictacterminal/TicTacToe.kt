@@ -125,12 +125,12 @@ fun printKeywordHints(size: Int, k: Int = 3) {
         print("$token -> $option  |  ")
         Thread.sleep(100)
     }
-    println("\nTarget the grid cell with the following tokens: ")
+/*    println("\nTarget the grid cell with the following tokens: ")
     if (size > 3) {
         for (eachRow in 1..size) {
             Thread.sleep(100)
             for (i in 1..size) {
-                print("  " + Toolbox.getIndexAlphabet(eachRow.toByte()) + i + "   ")
+                print(" " + Toolbox.getIndexAlphabet(eachRow.toByte()) + i + " ")
             }
             print("\n")
         }
@@ -138,9 +138,19 @@ fun printKeywordHints(size: Int, k: Int = 3) {
     } else {
         for (i in arrayOf(7, 8, 9, 4, 5, 6, 1, 2, 3)) {
             Thread.sleep(100)
-            print("   $i   ")
+            print(" $i ")
             if (i % 3 == 0) print("\n")
         }
         print("\n")
+    }*/
+    if (size <= 3) {
+        println("\nTarget a grid with these coordinates: ")
+        for (i in arrayOf(7, 8, 9, 4, 5, 6, 1, 2, 3)){
+            print(" $i\u3000 ")
+            if (i % 3 == 0) print("\n")
+        }
+    } else {
+        println("\nTarget a grid with board coordinates.")
     }
+    println()
 }

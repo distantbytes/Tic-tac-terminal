@@ -17,6 +17,6 @@ class Square(
         }
 
     override fun toString(): String {
-        return " [ " + piece.mark + " ] "
+        return "[" + piece.mark + "]"
     }
 }
