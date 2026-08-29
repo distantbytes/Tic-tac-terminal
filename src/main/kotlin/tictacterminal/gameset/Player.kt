@@ -1,7 +1,7 @@
 package tictacterminal.gameset
 
 open class Player(
-    val thisPiece: Piece,
+    open val thisPiece: Piece,
     private val mat: Mat,
     val prompts: Array<String?> = arrayOf(
         "It's your turn, take a move: \t",
