@@ -2,9 +2,9 @@ package tictacterminal.gameset
 
 import kotlin.random.Random
 
-class MnkBot(private val mat: Mat): Player(Piece.PLAYER_B, mat, arrayOf(
+class MnkBot(private val mat: Mat, override val thisPiece: Piece = Piece.PLAYER_B): Player(thisPiece, mat, arrayOf(
     null,
-    "X played at square ",
+    "${thisPiece.mark} played at square ",
     "Too bad, loser:(",
     "Thinking"
 )) {
