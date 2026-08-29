@@ -28,10 +28,6 @@ class MnkBot(private val mat: Mat, override val thisPiece: Piece = Piece.PLAYER_
                     searchForStraightThree(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
                     searchForFour(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
                     searchForFour(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
-/*                    searchForBrokenThree(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
-                    searchForBrokenThree(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
-                    searchForBrokenThree(eachLined.reversedArray(), Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }
-                    searchForBrokenThree(eachLined.reversedArray(), thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1) }*/
                     searchForLiveThree(eachLined, Piece.PLAYER_A, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
                     searchForLiveThree(eachLined, thisPiece, mat.k)?.let { candidates.put(it, (candidates[it] ?: 0) + 1)}
 
@@ -90,48 +86,16 @@ class MnkBot(private val mat: Mat, override val thisPiece: Piece = Piece.PLAYER_
                     if (seq.size >= 1) seq.add(eachSquare)
                 }
                 else -> {
-                    /*if (seq.size != 0) */
                     seq.clear()
                 }
             }
         }
-/*            when (eachSquare.piece){
-                Piece.BLANK -> seq.add(eachSquare)
-                mTarget -> seq.add(eachSquare)
-                else -> seq.clear()
-            }
-            if (seq.size == k && seq.count { it.piece == mTarget } == k - 2) break
-            else if (seq.isNotEmpty()) seq.removeAt(0)
-            else continue
-        }*/
         return if (seq.size == k) {
             seq.filter { it.piece == Piece.BLANK }.shuffled()[0]
         } else {
             null
         }
     }
-/*    private fun searchForBrokenThree(array: Array<Square>, mTarget: Piece, k: Int): Square?{
-        require(mTarget != Piece.BLANK)
-        require(k in 4..array.size)
-        //the sequence of a straight three is: * * _ *
-        val seq = mutableListOf<Square>()
-        for (eachSquare in array){
-            if (seq.size == k - 1 && seq.count { it.piece == mTarget } == 3 && seq.singleOrNull { it.piece == Piece.BLANK } != null) break
-            else if (seq.size == k - 1) seq.removeAt(0)
-            when (eachSquare.piece){
-                mTarget -> {
-                    seq.add(eachSquare)
-                }
-                Piece.BLANK -> {
-                    *//*if (seq.isNotEmpty()) *//*seq.add(eachSquare)
-                }
-                else -> seq.clear()
-            }
-        }
-        return if (seq.size == k) {
-            seq.filter { it.piece == Piece.BLANK }[0]
-        } else null
-    }*/
     private fun searchForFour(array: Array<Square>, mTarget: Piece, k: Int): Square?{
         require(mTarget != Piece.BLANK)
         require(k in 4..array.size)

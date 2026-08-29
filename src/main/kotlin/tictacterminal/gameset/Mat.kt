@@ -61,7 +61,7 @@ open class Mat(
         return checkWinningSeq(extracted) == tPiece
     }
 
-    fun playAt(move: Move, piece: Piece): Boolean{
+    fun playOn(move: Move, piece: Piece): Boolean{
     return try {
         matArray[move.rI][move.cI].putDownPiece(piece)
     } catch (e: IndexOutOfBoundsException){

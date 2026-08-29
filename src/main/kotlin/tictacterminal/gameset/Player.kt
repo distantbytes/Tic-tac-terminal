@@ -34,7 +34,7 @@ open class Player(
                     else -> {}
                 }
             }
-            if (mat.playAt(squareToPlayAt, thisPiece)){
+            if (mat.playOn(squareToPlayAt, thisPiece)){
                 Thread.sleep(100)
                 println(mat.toString())
                 println(pointOutMove(mat.getSquare(squareToPlayAt)!!))

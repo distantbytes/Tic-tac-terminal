@@ -32,7 +32,7 @@ class History(private val mat: Mat) {
             movesRec.removeAt(0)
             movesRec.removeAt(0)
             for ((piece, move) in movesRec.reversed()) {
-                tempMat.playAt(move, piece)
+                tempMat.playOn(move, piece)
             }
             return mat.attemptTakeback(tempMat)
         }
