@@ -71,16 +71,35 @@ open class Mat(
     }
 
     override fun toString(): String{
-        var matForPrint = ""
-        var boolean = false
-        for (eachRow in matArray){
-            if (boolean) matForPrint += "\n"
-            for (eachSquare in eachRow){
-                matForPrint += eachSquare.toString()
+        if (size > 3) {
+            var matForPrint = "\t"
+            var boolean = false
+            for (i in 1..size)
+                matForPrint += if (i <= 9) " $i\u3000" else "$i\u3000"
+            matForPrint += "\n"
+            var count = 1
+            for (eachRow in matArray) {
+                if (boolean) matForPrint += "\n"
+                matForPrint += (Toolbox.getIndexAlphabet(count++.toByte()).toString() + "\t")
+                for (eachSquare in eachRow) {
+                    matForPrint += eachSquare.toString()
+                }
+                boolean = true
             }
-            boolean = true
+            return matForPrint
+        } else {
+            var matForPrint = ""
+            var boolean = false
+            for (eachRow in matArray){
+                if (boolean) matForPrint += "\n"
+                for (eachSquare in eachRow){
+                    matForPrint += eachSquare.toString()
+                }
+                boolean = true
+            }
+            return matForPrint
+
         }
-        return matForPrint
     }
 
     private fun createMat(size: Int): Array<Array<Square>>{
