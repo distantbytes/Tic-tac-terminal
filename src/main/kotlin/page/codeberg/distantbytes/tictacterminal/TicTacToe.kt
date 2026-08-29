@@ -62,7 +62,7 @@ fun gameLoop(mat: Mat, history: History, playerA: Player, playerB: Player): Int 
                 if (mat.checkWinningSeq(playerA.thisPiece, mat.extractArray())) return 1
             }
             'H' -> {
-                printKeywordHints(mat.size)
+                printKeywordHints(mat.size, mat.k)
                 continue
             }
             'Q' -> return -4
