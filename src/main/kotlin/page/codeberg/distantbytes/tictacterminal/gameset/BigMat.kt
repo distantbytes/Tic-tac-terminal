@@ -1,4 +1,4 @@
-package tictacterminal.gameset
+package page.codeberg.distantbytes.tictacterminal.gameset
 
 class BigMat(size: Int, override val k: Int): Mat(size) {
 

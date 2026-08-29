@@ -1,4 +1,8 @@
-package tictacterminal.gameset
+package page.codeberg.distantbytes.tictacterminal.gameset
+
+import page.codeberg.distantbytes.tictacterminal.toolbox.askYesOrNoQuestion
+import page.codeberg.distantbytes.tictacterminal.toolbox.getAlphabetIndex
+import page.codeberg.distantbytes.tictacterminal.toolbox.getIndexAlphabet
 
 open class Player(
     open val thisPiece: Piece,
@@ -24,12 +28,12 @@ open class Player(
                 when (squareToPlayOn.c){
                     'H' -> return squareToPlayOn
                     'Q' -> {
-                        if (Toolbox.askYesOrNoQuestion((prompts[4] ?: "") + prompts[7], false)) return squareToPlayOn
+                        if (askYesOrNoQuestion((prompts[4] ?: "") + prompts[7], false)) return squareToPlayOn
                         else println(prompts[5] ?: "")
                         continue
                     }
                     'T' -> {
-                        if (Toolbox.askYesOrNoQuestion((prompts[4] ?: "") + prompts[8], false)) return squareToPlayOn
+                        if (askYesOrNoQuestion((prompts[4] ?: "") + prompts[8], false)) return squareToPlayOn
                         else println(prompts[5] ?: "")
                         continue
                     }
@@ -44,7 +48,7 @@ open class Player(
             }
         }
     }
-    protected open fun getNextMove(): Move{
+    protected open fun getNextMove(): Move {
         while (true){
             val reply = askPlayerForInput()
             when (reply[0]){
@@ -56,7 +60,7 @@ open class Player(
             try {
                 when (  //match the value of resolved,
                     val resolved =
-                        if (Toolbox.getAlphabetIndex(reply[0]) != null) resolveCoordsRef(reply[0], reply.drop(1).toInt())
+                        if (getAlphabetIndex(reply[0]) != null) resolveCoordsRef(reply[0], reply.drop(1).toInt())
                         //if the first character in reply isn't an alphabet letter, we'll get null from getAlphabetIndex
                         else resolveCoordsRef(null, reply.toInt())
                         //pass either an alphabet character plus an integer, or an integer alone and leave character null
@@ -79,7 +83,7 @@ open class Player(
     private fun resolveCoordsRef(char: Char?, int: Int): Move?{
         if (char != null) {
             //for situation of an alphabet and an integer, we get the letter's index and use these numbers as coords of rows and columns.
-            val charInInt = Toolbox.getAlphabetIndex(char)
+            val charInInt = getAlphabetIndex(char)
             return if (charInInt == null) null else Move(charInInt - 1, int - 1)
             //have them subtracted by 1 because array indexes starts with 0
             //return null if getAlphabetIndex returns null, which happens when the provided character not in alphabet
@@ -115,11 +119,11 @@ open class Player(
     }
 
     open fun pointOutMove(playedOn: Square): String{
-        return prompts[1] + Toolbox.getIndexAlphabet((playedOn.coords[0] + 1).toByte())!! + (playedOn.coords[1] + 1) + "\n"
+        return prompts[1] + getIndexAlphabet((playedOn.coords[0] + 1).toByte())!! + (playedOn.coords[1] + 1) + "\n"
     }
 
     open fun askWhetherToTakeAMoveBack(): Boolean{
         Thread.sleep(500)
-        return Toolbox.askYesOrNoQuestion(prompts[6] ?: "", false)
+        return askYesOrNoQuestion(prompts[6] ?: "", false)
     }
 }

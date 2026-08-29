@@ -1,4 +1,4 @@
-package tictacterminal.gameset
+package page.codeberg.distantbytes.tictacterminal.gameset
 
 class Square(
     val coords: Array<Int>,
