@@ -89,22 +89,6 @@ fun gameLoop(mat: Mat, history: History, playerA: Player, playerB: Player): Int 
 }
 
 fun newMat(): Mat {
-    /*println("Choose the board size, or leave blank to go with default: ")
-    while (true) {
-        when (val wantedSizeInString = readLine()!!) {
-            "" -> return Mat()
-            else -> {
-                try {
-                    val wantedSize = wantedSizeInString.toInt()
-                    *//*if (abs(wantedSize) in 3..6) return Mat(abs(wantedSize))
-                    else println("Please enter an integer between 3 and 6.")*//*
-                    return Mat(abs(wantedSize))
-                } catch (e: NumberFormatException) {
-                    println("That's not an integer, dumbhead!")
-                }
-            }
-        }
-    }*/
     println("Choose a board to play on: [1, 2, 3]")
     for (textToPrint in arrayOf(
         arrayOf("1", "Classic Tic-tac-toe   ", "3-3-3"),
