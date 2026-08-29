@@ -93,7 +93,8 @@ fun newMat(): Mat {
     for (textToPrint in arrayOf(
         arrayOf("1", "Classic Tic-tac-toe   ", "3-3-3"),
         arrayOf("2", "Standard Five-in-a-row", "15-15-5"),
-        arrayOf("3", "Simple Five-in-a-row  ", "13-13-5")
+        arrayOf("3", "Simple Five-in-a-row  ", "13-13-5"),
+        arrayOf("+", "Customize             ", "...")
     )) {
         print(textToPrint[0] + " |\t")
         print(textToPrint[1] + "\t\t")
@@ -106,6 +107,38 @@ fun newMat(): Mat {
             "1" -> return Mat(3)
             "2" -> return BigMat(15, 5)
             "3" -> return BigMat(13, 5)
+            "+" -> {
+                var wantedSize = 0
+                var wantedK = 0
+                print("Specify board size [5 ~ 19] : ")
+                while (wantedSize == 0) {
+                    try {
+                        when (val readLine = readLine()?.toInt()) {
+                            in 5..19 -> wantedSize = readLine!!
+                            else -> print("Please enter an integer between 5 and 19: ")
+                        }
+                    } catch (e: Exception) {
+                        println("That's not an integer, dumbhead!")
+                        Thread.sleep(100)
+                        print("Enter an integer between 5 and 19: ")
+                    }
+                }
+                print("How many in a row to win? [5 ~ $wantedSize] : ")
+                while (wantedK == 0) {
+                    try {
+                        when (val readLine = readLine()?.toInt()) {
+                            in 5..wantedSize -> wantedK = readLine!!
+                            else -> print("Please enter an integer between 5 and $wantedSize: ")
+                        }
+                    } catch (e: Exception) {
+                        println("That's not an integer, dumbhead!")
+                        Thread.sleep(100)
+                        print("Enter an integer between 5 and $wantedSize: ")
+                    }
+                }
+                return if (wantedK < wantedSize) BigMat(wantedSize, wantedK) else Mat(wantedSize)
+            }
+
             else -> println("Enter one of the options!")
         }
     }

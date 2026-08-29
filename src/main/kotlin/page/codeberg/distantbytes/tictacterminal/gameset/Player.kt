@@ -45,6 +45,9 @@ open class Player(
                 println(mat.toString())
                 println(pointOutMove(mat.getSquare(squareToPlayOn)!!))
                 return squareToPlayOn
+            } else {
+                Thread.sleep(250)
+                print(prompts[5])
             }
         }
     }
