@@ -47,7 +47,7 @@ open class Player(
                 return squareToPlayOn
             } else {
                 Thread.sleep(250)
-                print(prompts[5])
+                if (prompts.size >= 5) print(prompts[5] ?: "")
             }
         }
     }
