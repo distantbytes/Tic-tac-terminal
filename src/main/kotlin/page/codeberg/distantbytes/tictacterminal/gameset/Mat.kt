@@ -15,7 +15,7 @@ open class Mat(
                     Array<Square> //row, column or diagonal, contains nullable squares
                     >
             >{
-        require(size in 3..6)
+        /*require(size in 3..6)*/
 
         //extract all lines and throw them in an array
         val rows = Array(size){ row -> matArray[row].copyOf() }
