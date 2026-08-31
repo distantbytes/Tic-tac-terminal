@@ -14,7 +14,7 @@ fun askYesOrNoQuestion(prompt: String, default: Boolean): Boolean{
     val answer = readLine()
     if (answer == "") return default
     answer?.let {
-        return when (it[0].toUpperCase()){
+        return when (it[0].uppercaseChar()){
             'Y' -> true
             'N' -> false
             else -> default
