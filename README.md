@@ -1,8 +1,12 @@
 # Tic-Tac-Terminal
 
 Terminal MNK games written in *Kotlin*, with GOFAI opponent that loops through and analyzes every square on each line, all directions. The bot is designed to be beatable, of course.
+
 Forget about all the maths stuff, here the most brute-force algorithm you'll ever see in a chess program is used, the idea was simple but actually quite difficult to code.
 
+Lately, we improved the algorithm __significantly__! Now the bot is much smarter, and takes the initiative to attack.
+>![image004](docs/004.png)
+___
 ### How to run
 >![image001](docs/001.PNG)
 
