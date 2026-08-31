@@ -163,7 +163,7 @@ class MnkBot(private val mat: Mat, override val thisPiece: Piece = Piece.PLAYER_
                 && seq[0].piece == Piece.BLANK
                 && seq.last().piece == Piece.BLANK
             ) return seq.filter { it.piece == Piece.BLANK }.shuffled()[0]
-            else if (seq.size == k) seq.removeAt(0)
+            else if (seq.size == k - 1) seq.removeAt(0)
         }
         return null
     }
@@ -177,8 +177,8 @@ class MnkBot(private val mat: Mat, override val thisPiece: Piece = Piece.PLAYER_
         for (eachSquare in array){
             seq.add(eachSquare)
             if (
-                seq.size == 5
-                && seq.count { it.piece == mTarget } in 1..2
+                seq.size == 3
+                && seq.count { it.piece == mTarget } == 1
                 && seq[0].piece == Piece.BLANK
                 && seq.last().piece == Piece.BLANK
             ) {
