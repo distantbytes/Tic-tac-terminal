@@ -93,3 +93,7 @@ http-client.private.env.json
 *.sh
 *.bat
 *.cmd
+
+# Maven
+target/
+dependency-reduced-pom.xml
