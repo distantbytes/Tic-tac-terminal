@@ -89,7 +89,14 @@ http-client.private.env.json
 
 
 ## ADDED BY ME
+
 # Terminal scripts
 *.sh
 *.bat
 *.cmd
+
+# Gradle
+.gradle/
+build/
+**/build/
+gradle.properties
