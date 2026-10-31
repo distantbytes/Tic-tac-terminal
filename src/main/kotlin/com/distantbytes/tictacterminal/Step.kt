@@ -3,8 +3,8 @@ package com.distantbytes.tictacterminal
 sealed class Step
 
 data class Move(val rI: Int, val cI: Int): Step()
-// row index (alphabets)    left to right
-// col index (numbers)      bottom to top
+// row index (numbers)        bottom to top
+// col index (alphabets)      left to right
 
 data class Operation(val value: OperationType): Step() {
     enum class OperationType {
