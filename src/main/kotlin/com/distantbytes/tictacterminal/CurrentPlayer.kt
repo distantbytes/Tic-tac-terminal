@@ -66,8 +66,8 @@ class CurrentPlayer : Player(Piece.X) {
         }
         return try {
             Move(
-                getAlphabetIndex(string[0])!!,
-                string.drop(1).toInt()
+                getAlphabetIndex(string[0])!! - 1,
+                string.drop(1).toInt() - 1
             )
         } catch (x: Exception) {
             null

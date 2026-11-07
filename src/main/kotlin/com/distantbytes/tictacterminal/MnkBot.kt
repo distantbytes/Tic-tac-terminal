@@ -5,7 +5,7 @@ import kotlin.random.Random
 
 class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<Square>, target: Piece, k: Int) -> Square?, Int>) : Player(Piece.O) {
     override fun takeMove(): Step {
-        val extracted = extractArray(board)
+        val extracted = board.extractArray()
         val candidates: MutableMap<Square, Int> = mutableMapOf()
         for (eachDir in extracted) {
             for (eachLined in eachDir) {
@@ -34,25 +34,4 @@ class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<S
             }
     }
 
-    fun extractArray(board: Board): Array< //contains 3 arrays, each for rows, columns and diagonals
-            Array< //contains the same number of arrays as val size, each array is a row, column or diagonal
-                    Array<Square> //row, column or diagonal, contains nullable squares
-                    >
-            > {
-        val size = board.size
-        //extract all lines and throw them in an array
-        val rows = Array(size){ row -> board.array[row].copyOf() }
-
-        // now do the same to the columns
-        val cols = Array(size){ col -> Array(size){ row -> board.array[row][col] } }
-
-        // and the diagonals
-        val diags = arrayOf(
-            Array(size){ i -> board.array[i][i] }, //this is the main diag, from top-left to bottom-right, change index in both ways
-            Array(size){ i -> board.array[i][size - (i + 1)] } // this is the anti diag, from top-right to bottom-left, change second index in the opposite direction
-        )
-
-        //finally, put the three arrays into one
-        return arrayOf(rows, cols, diags)
-    }
 }
