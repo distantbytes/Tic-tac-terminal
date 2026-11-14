@@ -6,8 +6,12 @@ class TicTacToeBoard(
     override val array: Array<Array<Square>>
     init {
         val list = mutableListOf(mutableListOf<Square>())
-        for ((row, eachRow) in list.withIndex()) {
-            for (i in 1..size) eachRow.add(Square(Move(row, i)))
+        /*for ((row, eachRow) in list.withIndex()) {
+            for (i in 0 until size) eachRow.add(Square(Move(row, i)))
+        }*/
+        for (rowIndex in 0 until size) {
+            list.add(mutableListOf())
+            for (colIndex in 0 until size) list[rowIndex].add(Square(Move(rowIndex, colIndex)))
         }
         array = list.map { it.toTypedArray() }.toTypedArray()
     }
