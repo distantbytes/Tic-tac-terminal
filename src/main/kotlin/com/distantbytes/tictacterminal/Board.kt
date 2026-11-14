@@ -42,13 +42,14 @@ abstract class Board (
             }
             return string
         } else {
-            string += "\t"
+            string += "\n\t"
             for (i in 1..size) string += getIndexAlphabet(i.toByte()).toString() + "\t"
             for ((i, eachRow) in array.withIndex().reversed()) {
                 string += "\n"
                 string += (i + 1).toString() + "\t"
-                for (eachSquare in eachRow) string += eachSquare
+                for (eachSquare in eachRow) string += eachSquare.toString() + "\t"
             }
+            string += "\n"
             return string
         }
     }

@@ -161,7 +161,7 @@ class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<S
                 return null
             } to 2,
 
-            fun(array: Array<Square>, mTarget: Piece): Square?{
+            fun(array: Array<Square>, mTarget: Piece, _:Int): Square?{
                 require(mTarget != Piece.BLANK)
                 require(array.size > 3)
 
