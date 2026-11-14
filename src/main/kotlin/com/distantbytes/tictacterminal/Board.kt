@@ -43,11 +43,11 @@ abstract class Board (
             return string
         } else {
             string += "\n\t"
-            for (i in 1..size) string += getIndexAlphabet(i.toByte()).toString() + "\t"
+            for (i in 1..size) string += getIndexAlphabet(i.toByte()).toString() + "  "
             for ((i, eachRow) in array.withIndex().reversed()) {
                 string += "\n"
                 string += (i + 1).toString() + "\t"
-                for (eachSquare in eachRow) string += eachSquare.toString() + "\t"
+                for (eachSquare in eachRow) string += "$eachSquare  "
             }
             string += "\n"
             return string

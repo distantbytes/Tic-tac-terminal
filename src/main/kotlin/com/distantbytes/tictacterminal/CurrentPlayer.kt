@@ -17,6 +17,7 @@ class CurrentPlayer : Player(Piece.X) {
                 is Operation -> {
                     when (reply.value) {
                         Operation.OperationType.TAKEBACK -> if (askWhetherToTakeback()) return reply else print("Take a move then: \t")
+                        Operation.OperationType.QUIT ->     if (askWhetherToQuit()) return reply else print("Take a move then: \t")
                         else -> return reply
                     }
                 }
@@ -75,10 +76,22 @@ class CurrentPlayer : Player(Piece.X) {
     }
     private fun askWhetherToTakeback(): Boolean {
         print("Take a move back? \t[y/N]:\t")
-        return when ((readlnOrNull()?.get(0)?.lowercaseChar())) {
-            'y' -> true
-            'n' -> false
-            else -> false
-        }
+        return try {
+            when ((readlnOrNull()?.get(0)?.lowercaseChar())) {
+                'y' -> true
+                'n' -> false
+                else -> false
+            }
+        } catch (x: Exception) { false }
+    }
+    private fun askWhetherToQuit(): Boolean {
+        print("Are you sure to quit? \t[y/N]:\t")
+        return try {
+            when ((readlnOrNull()?.get(0)?.lowercaseChar())) {
+                'y' -> true
+                'n' -> false
+                else -> false
+            }
+        } catch (x: Exception) { false }
     }
 }
