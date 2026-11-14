@@ -1,5 +1,7 @@
 package com.distantbytes.tictacterminal
 
+import javax.lang.model.type.ArrayType
+
 class MnkBoard(
     override val size: Int,
     override val k: Int
@@ -14,7 +16,10 @@ class MnkBoard(
             list.add(mutableListOf())
             for (colIndex in 0 until size) list[rowIndex].add(Square(Move(rowIndex, colIndex)))
         }
+        list.removeAll { it.size != size }
         array = list.map { it.toTypedArray() }.toTypedArray()
+        /*println(array.size)
+        println(array.all { it.size == array.size })*/
     }
     override fun attemptTakeback(): Boolean {
         if (history.size <= 2) return false
