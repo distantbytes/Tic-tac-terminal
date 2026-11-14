@@ -6,11 +6,11 @@ class CurrentPlayer : Player(Piece.X) {
     override fun takeMove(): Step {
         print("Take a move: \t")
         while (true) {
-            when (val reply = parseInput(askPlayerForInput())) {
+            when (val reply = parseInput(askPlayerForInput().trim())) {
                 null -> {
-                    println("That's not a valid move! ")
+                    println("That's not a valid move! -2")
                     Thread.sleep(250)
-                    println("Take a move: \t")
+                    print("Take a move: \t")
                     continue
                 }
                 is Move -> return reply
@@ -26,11 +26,11 @@ class CurrentPlayer : Player(Piece.X) {
 
     private fun askPlayerForInput(): String {
         while (true) {
-            val playerInput = readLine()
+            val playerInput = readlnOrNull()
             if (playerInput != null) return playerInput
             else {
                 //ensure that playerInput as string isn't null and is in proper length
-                println("That's not a valid move! ")
+                println("That's not a valid move! -1")
                 Thread.sleep(250)
                 print("Take a move: \t")
             }
@@ -46,7 +46,7 @@ class CurrentPlayer : Player(Piece.X) {
         }
         if (string.length == 1) {
             try {
-                return when (string[0].toInt()) {
+                return when (string[0].toString().toInt()) {
                     7 -> Move(0, 0)
                     8 -> Move(0, 1)
                     9 -> Move(0, 2)
@@ -66,16 +66,16 @@ class CurrentPlayer : Player(Piece.X) {
         }
         return try {
             Move(
-                getAlphabetIndex(string[0])!! - 1,
-                string.drop(1).toInt() - 1
+                string.drop(1).toInt() - 1,
+                getAlphabetIndex(string[0])!! - 1
             )
         } catch (x: Exception) {
             null
         }
     }
-    fun askWhetherToTakeback(): Boolean {
+    private fun askWhetherToTakeback(): Boolean {
         print("Take a move back? \t[y/N]:\t")
-        return when ((readLine()?.get(0)?.toLowerCase())) {
+        return when ((readlnOrNull()?.get(0)?.lowercaseChar())) {
             'y' -> true
             'n' -> false
             else -> false
