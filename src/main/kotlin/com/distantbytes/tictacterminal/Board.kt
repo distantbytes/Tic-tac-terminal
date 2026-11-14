@@ -52,9 +52,9 @@ abstract class Board (
             return string
         }
     }
-    fun extractArray(): Array< //contains 3 arrays, each for rows, columns and diagonals
+    open fun extractArray(): Array< //contains 3 arrays, each for rows, columns and diagonals
             Array< //contains the same number of arrays as val size, each array is a row, column or diagonal
-                    Array<Square> //row, column or diagonal, contains nullable squares
+                    Array<Square> //row, column or diagonal
                     >
             > {
         val size = this.size

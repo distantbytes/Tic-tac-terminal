@@ -54,6 +54,6 @@ class TicTacToeGame(size: Int = 3) : Game {
         }
     }
     private fun pointOutMove(piece: Piece, move: Move) {
-        println("$piece played on " + getIndexAlphabet((move.cI + 1).toByte()) + (move.rI + 1))
+        println("$piece played on " + getIndexAlphabet((move.cI + 1).toByte()) + (move.rI + 1) + "\n")
     }
 }
