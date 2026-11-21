@@ -1,10 +1,18 @@
+<div align="center">
+
+![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=flat-square&logo=kotlin&logoColor=white)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://codeberg.org/distantbytes/Tic-tac-terminal/src/branch/main/LICENSE)
+[![downstream](https://img.shields.io/badge/mirror_on-Github-%23121011?style=flat-square&logo=github)](https://github.com/distantbytes/Tic-tac-terminal)
+
+</div>
+
 # Tic-Tac-Terminal
 
 Terminal MNK games written in *Kotlin*, with GOFAI opponent. The bot is designed to be beatable, of course.
 
-Forget about all the maths stuff, here the most brute-force algorithm is used, the idea was simple, to loop through every square on each line, all directions, and analyze the patterns.
+No fancy math here, just a surprisingly straightforward algorithm. The idea is simple: loop through every square on each line, in all directions, and analyze the patterns.
 
-We've improved the algorithm __significantly__! Now the bot is much smarter and takes the initiative to attack.
+The algorithm as been improved **significantly**! Now the bot is much smarter, it doesn't just block your lines, but builds its own as well.
 ![](docs/005.png)
 ___
 ### How to play
@@ -12,17 +20,17 @@ Download the jar from [releases](https://codeberg.org/distantbytes/Tic-tac-termi
 ```shell
 java -jar Tic-tac-terminal-<verison>.jar
 ```
-Add argument `1` `2` or `3` to specify board.
+Add an argument (`1` `2` or `3`) to specify the board.
 
 For example:
 ```shell
 java -jar Tic-tac-terminal-<version>.jar 2
 ```
 
-(Replace `<version>` with actual version)
+(Replace `<version>` with actual version number)
 
 ### Requirements
 - _JDK 11_
 ___
-### Have any problems? 
-Go to [issues page](https://codeberg.org/distantbytes/Tic-tac-terminal/issues) 
+### Issues
+If you encounter any problems, go to [issues page](https://codeberg.org/distantbytes/Tic-tac-terminal/issues) 
