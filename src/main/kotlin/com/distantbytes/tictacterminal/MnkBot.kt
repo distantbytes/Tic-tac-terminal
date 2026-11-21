@@ -8,7 +8,7 @@ class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<S
         val extracted = board.extractArray()
         val candidates: MutableMap<Square, Int> = mutableMapOf()
         print("Thinking")
-        for (eachDir in extracted) {
+        /*for (eachDir in extracted) {
             for (eachLined in eachDir) {
                 print(".")
                 for ((strategy, weight) in strategies) {
@@ -18,6 +18,17 @@ class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<S
                         ?.let { candidates.put(it, weight) }
                 }
             }
+        }*/
+        for ((strategy, weight) in strategies) {
+            for (eachDir in extracted) {
+                for (eachLined in eachDir) {
+                    strategy.invoke(eachLined, Piece.X, board.k)
+                        ?.let { candidates.put(it, (candidates[it] ?: 0) + weight) }
+                    strategy.invoke(eachLined, piece, board.k)
+                        ?.let { candidates.put(it, (candidates[it] ?: 0) + weight) }
+                }
+            }
+            print(".")
         }
         sortByValueDescendingWithRandomTies(candidates).keys
             .let {
@@ -89,7 +100,7 @@ class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<S
                 } else {
                     null
                 }
-            } to 4,
+            } to 5,
 
             fun(array: Array<Square>, target: Piece, k: Int): Square?{  //four
                 require(target != Piece.BLANK)
@@ -131,7 +142,7 @@ class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<S
                     ) return seq.singleOrNull { it.piece == Piece.BLANK }
                     else if (seq.size == k - 1) seq.removeAt(0)
                 }
-                for (eachSquare in array) {
+                /*for (eachSquare in array) {
                     seq.add(eachSquare)
                     if (        // _ * * * _
                         seq.size == k
@@ -140,7 +151,7 @@ class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<S
                         && seq.last().piece == Piece.BLANK
                     ) return seq.filter { it.piece == Piece.BLANK }.shuffled()[0]
                     else if (seq.size == k) seq.removeAt(0)
-                }
+                }*/
                 return null
             } to 3,
 
