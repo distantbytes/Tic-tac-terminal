@@ -1,6 +1,29 @@
-package page.codeberg.distantbytes.tictacterminal.toolbox
+package com.distantbytes.tictacterminal
 
+import java.util.Locale
+import java.util.ResourceBundle
 import kotlin.random.Random
+
+fun getBundleString(key: String): String = ResourceBundle
+    .getBundle(
+        "tictacterminal",
+        Locale.getDefault()
+    )!!
+    .getString(key)
+
+fun getAlphabetIndex(char: Char): Int?{
+    return when (char){
+        in 'A'..'Z' -> char - 'A' + 1
+        in 'a'..'z' -> char - 'a' + 1
+        else -> null
+    }
+}
+fun getIndexAlphabet(byte: Byte): Char? {
+    return when (byte) {
+        in 1..26 -> 'A' + (byte - 1)
+        else -> null
+    }
+}
 
 fun <K> sortByValueDescendingWithRandomTies(map: MutableMap<K, Int>): LinkedHashMap<K, Int>{
     val grouped = map.entries.groupBy { it.value } //group the entries with equal values

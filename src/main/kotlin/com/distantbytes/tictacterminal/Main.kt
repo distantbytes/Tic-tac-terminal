@@ -1,15 +1,6 @@
 package com.distantbytes.tictacterminal
 
 import java.text.MessageFormat
-import java.util.Locale
-import java.util.ResourceBundle
-
-public fun getBundleString(key: String): String = ResourceBundle
-    .getBundle(
-        "tictacterminal", 
-        Locale.getDefault()
-    )!!
-    .getString(key)
 
 fun main(args: Array<String>) {
     noArgs()

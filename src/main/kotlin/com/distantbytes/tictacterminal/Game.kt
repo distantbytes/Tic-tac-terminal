@@ -1,6 +1,5 @@
 package com.distantbytes.tictacterminal
 
-import page.codeberg.distantbytes.tictacterminal.toolbox.getIndexAlphabet
 import kotlin.system.exitProcess
 import java.text.MessageFormat
 

@@ -1,7 +1,5 @@
 package com.distantbytes.tictacterminal
 
-import page.codeberg.distantbytes.tictacterminal.toolbox.getAlphabetIndex
-
 class CurrentPlayer : Player(Piece.X) {
     override fun takeMove(): Step {
         print(getBundleString("prompt.takeMove") + " \t")
