@@ -4,20 +4,20 @@ import page.codeberg.distantbytes.tictacterminal.toolbox.getAlphabetIndex
 
 class CurrentPlayer : Player(Piece.X) {
     override fun takeMove(): Step {
-        print("Take a move: \t")
+        print(getBundleString("prompt.takeMove") + " \t")
         while (true) {
             when (val reply = parseInput(askPlayerForInput().trim())) {
                 null -> {
-                    println("That's not a valid move! -2")
+                    println(getBundleString("warning.notValidMove") + " -2")
                     Thread.sleep(250)
-                    print("Take a move: \t")
+                    print(getBundleString("prompt.takeMove") + " \t")
                     continue
                 }
                 is Move -> return reply
                 is Operation -> {
                     when (reply.value) {
-                        Operation.OperationType.TAKEBACK -> if (askWhetherToTakeback()) return reply else print("Take a move then: \t")
-                        Operation.OperationType.QUIT ->     if (askWhetherToQuit()) return reply else print("Take a move then: \t")
+                        Operation.OperationType.TAKEBACK -> if (askWhetherToTakeback()) return reply else print(getBundleString("prompt.takeMove2") + " \t")
+                        Operation.OperationType.QUIT ->     if (askWhetherToQuit()) return reply else print(getBundleString("prompt.takeMove2") + " \t")
                         else -> return reply
                     }
                 }
@@ -31,9 +31,9 @@ class CurrentPlayer : Player(Piece.X) {
             if (playerInput != null) return playerInput
             else {
                 //ensure that playerInput as string isn't null and is in proper length
-                println("That's not a valid move! -1")
+                println(getBundleString("warning.notValidMove") + " -1")
                 Thread.sleep(250)
-                print("Take a move: \t")
+                print(getBundleString("prompt.takeMove") + " \t")
             }
         }
     }
@@ -75,7 +75,7 @@ class CurrentPlayer : Player(Piece.X) {
         }
     }
     private fun askWhetherToTakeback(): Boolean {
-        print("Take a move back? \t[y/N]:\t")
+        print(getBundleString("prompt.confirmTakeback") + " \t[y/N]:\t")
         return try {
             when ((readlnOrNull()?.get(0)?.lowercaseChar())) {
                 'y' -> true
@@ -85,7 +85,7 @@ class CurrentPlayer : Player(Piece.X) {
         } catch (x: Exception) { false }
     }
     private fun askWhetherToQuit(): Boolean {
-        print("Are you sure to quit? \t[y/N]:\t")
+        print(getBundleString("prompt.confirmQuit") + " \t[y/N]:\t")
         return try {
             when ((readlnOrNull()?.get(0)?.lowercaseChar())) {
                 'y' -> true

@@ -1,5 +1,16 @@
 package com.distantbytes.tictacterminal
 
+import java.text.MessageFormat
+import java.util.Locale
+import java.util.ResourceBundle
+
+public fun getBundleString(key: String): String = ResourceBundle
+    .getBundle(
+        "tictacterminal", 
+        Locale.getDefault()
+    )!!
+    .getString(key)
+
 fun main(args: Array<String>) {
     noArgs()
 }
@@ -8,19 +19,19 @@ fun noArgs() {
     chooseGame().letsGo()
 }
 fun chooseGame(): Game {
-    println("Choose a board to play on: [1, 2, 3]")
+    println(getBundleString("game.chooseBoard") + " [1, 2, 3]")
     for (textToPrint in arrayOf(
-        arrayOf("1", "Classic Tic-tac-toe   ", "3-3-3"),
-        arrayOf("2", "Standard Five-in-a-row", "15-15-5"),
-        arrayOf("3", "Simple Five-in-a-row  ", "13-13-5"),
-        arrayOf("+", "Customize             ", "...")
+        arrayOf("1", getBundleString("game.classicTicTacToe") + "   ", "3-3-3"),
+        arrayOf("2", getBundleString("game.standardGomoku") + " ", "15-15-5"),
+        arrayOf("3", getBundleString("game.simpleGomoku") + "   ", "13-13-5"),
+        arrayOf("+", getBundleString("game.custom") + "     ", "...")
     )) {
         print(textToPrint[0] + " |\t")
         print(textToPrint[1] + "\t\t")
         print(textToPrint[2] + "\n")
     }
     while (true) {
-        print("Your choice:\t")
+        print(getBundleString("prompt.yourChoice") + "\t")
         when (readlnOrNull()?.trim()?:"") {
             "1" -> { return TicTacToeGame(3) }
             "2" -> { return MnkGame(15, 5) }
@@ -28,35 +39,35 @@ fun chooseGame(): Game {
             "+" -> {
                 var wantedSize = 0
                 var wantedK = 0
-                print("Specify board size [5 ~ 19]: \t")
+                print(MessageFormat.format(getBundleString("prompt.askBoardSize"), "5", "9") + " \t")
                 while (wantedSize == 0) {
                     try {
                         when (val readLine = readlnOrNull()?.toInt()) {
                             in 5..19 -> wantedSize = readLine!!
-                            else -> print("Please enter an integer between 5 and 19: \t")
+                            else -> print(MessageFormat.format(getBundleString("prompt.enterIntBetween"), "5", "9") + " \t")
                         }
-                    } catch (e: Exception) {
-                        println("That's not an integer, dumbhead!")
+                    } catch (x: Exception) {
+                        println(getBundleString("warning.notInt"))
                         Thread.sleep(100)
-                        print("Enter an integer between 5 and 19: \t")
+                        print(MessageFormat.format(getBundleString("prompt.enterIntBetween"), "5", "9") + " \t")
                     }
                 }
-                print("How many in a row to win? [5 ~ $wantedSize]: \t")
+                print(MessageFormat.format(getBundleString("prompt.howManyToWin"), 5, wantedSize) + " \t")
                 while (wantedK == 0) {
                     try {
                         when (val readLine = readlnOrNull()?.toInt()) {
                             in 5..wantedSize -> wantedK = readLine!!
-                            else -> print("Please enter an integer between 5 and $wantedSize: \t")
+                            else -> print(MessageFormat.format(getBundleString("prompt.enterIntBetween"), "5", "9") + " \t")
                         }
-                    } catch (e: Exception) {
-                        println("That's not an integer, dumbhead!")
+                    } catch (x: Exception) {
+                        println(getBundleString("warning.notInt"))
                         Thread.sleep(100)
-                        print("Enter an integer between 5 and $wantedSize: \t")
+                        print(MessageFormat.format(getBundleString("prompt.enterIntBetween"), "5", "9") + " \t")
                     }
                 }
                 return if (wantedK < wantedSize) MnkGame(wantedSize, wantedK) else TicTacToeGame(wantedSize)
             }
-            else -> println("That's not a valid option! ")
+            else -> println(getBundleString("warning.notValidOption"))
         }
     }
 }
