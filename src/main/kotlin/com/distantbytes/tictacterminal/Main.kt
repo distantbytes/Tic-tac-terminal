@@ -7,7 +7,13 @@ import java.io.PrintStream
 
 fun main(args: Array<String>) {
     System.setOut(PrintStream(FileOutputStream(FileDescriptor.out), true, "UTF-8"))
-    noArgs()
+    if (args.isEmpty()) noArgs()
+    else when (args[0]) {
+        "1" -> TicTacToeGame(3)
+        "2" -> MnkGame(15, 5)
+        "3" -> MnkGame(13, 5)
+        else -> throw IllegalArgumentException("Unknown program argument")
+    }.letsGo()
 }
 
 fun noArgs() {
