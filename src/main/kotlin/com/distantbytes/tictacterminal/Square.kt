@@ -1,22 +1,21 @@
-package page.codeberg.distantbytes.tictacterminal.gameset
+package com.distantbytes.tictacterminal
 
 class Square(
-    val coords: Array<Int>,
-    wantedPiece: Piece = Piece.BLANK
+    val coords: Move,
+    initialPiece: Piece = Piece.BLANK
 ) {
-    var piece = wantedPiece
+    var piece = initialPiece
         private set
     fun putDownPiece(pieceToPutDown: Piece): Boolean{
         return if (piece == Piece.BLANK) {
             piece = pieceToPutDown
             true
         } else {
-            println("That spot is already drawn!")
             false
         }
-        }
+    }
 
     override fun toString(): String {
-        return "[" + piece.mark + "]"
+        return piece.mark.toString()
     }
 }
