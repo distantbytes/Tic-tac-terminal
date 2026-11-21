@@ -1,8 +1,12 @@
 package com.distantbytes.tictacterminal
 
 import java.text.MessageFormat
+import java.io.FileDescriptor
+import java.io.FileOutputStream
+import java.io.PrintStream
 
 fun main(args: Array<String>) {
+    System.setOut(PrintStream(FileOutputStream(FileDescriptor.out), true, "UTF-8"))
     noArgs()
 }
 
@@ -12,10 +16,10 @@ fun noArgs() {
 fun chooseGame(): Game {
     println(getBundleString("game.chooseBoard") + " [1, 2, 3]")
     for (textToPrint in arrayOf(
-        arrayOf("1", getBundleString("game.classicTicTacToe") + "   ", "3-3-3"),
-        arrayOf("2", getBundleString("game.standardGomoku") + " ", "15-15-5"),
-        arrayOf("3", getBundleString("game.simpleGomoku") + "   ", "13-13-5"),
-        arrayOf("+", getBundleString("game.custom") + "     ", "...")
+        arrayOf("1", getBundleString("game.classicTicTacToe"), "3-3-3"),
+        arrayOf("2", getBundleString("game.standardGomoku"), "15-15-5"),
+        arrayOf("3", getBundleString("game.simpleGomoku"), "13-13-5"),
+        arrayOf("+", getBundleString("game.custom"), "...")
     )) {
         print(textToPrint[0] + " |\t")
         print(textToPrint[1] + "\t\t")
