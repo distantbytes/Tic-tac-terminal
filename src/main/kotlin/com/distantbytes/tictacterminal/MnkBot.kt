@@ -1,6 +1,5 @@
 package com.distantbytes.tictacterminal
 
-import page.codeberg.distantbytes.tictacterminal.toolbox.sortByValueDescendingWithRandomTies
 import kotlin.random.Random
 
 class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<Square>, target: Piece, k: Int) -> Square?, Int> = simpleStrategies) : Player(Piece.O) {

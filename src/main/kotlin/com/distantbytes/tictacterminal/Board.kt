@@ -1,7 +1,5 @@
 package com.distantbytes.tictacterminal
 
-import page.codeberg.distantbytes.tictacterminal.toolbox.getIndexAlphabet
-
 abstract class Board (
     open val size: Int,
     open val k: Int
