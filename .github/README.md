@@ -15,6 +15,13 @@ Download the jar from [releases](https://codeberg.org/distantbytes/Tic-tac-termi
 ```shell
 java -jar Tic-tac-terminal-<verison>.jar
 ```
+Add argument `1` `2` or `3` to specify board.
+
+For example:
+```shell
+java -jar Tic-tac-terminal-<version>.jar 2
+```
+
 (Replace `<version>` with actual version)
 
 ### Requirements
