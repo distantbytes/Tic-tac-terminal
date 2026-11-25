@@ -18,7 +18,8 @@ Terminal MNK games written in *Kotlin*, with GOFAI opponent. The bot is designed
 No fancy math here, just a surprisingly straightforward algorithm. The idea is simple: loop through every square on each line, in all directions, and analyze the patterns.
 
 The algorithm as been improved **significantly**! Now the bot is much smarter, it doesn't just block your lines, but builds its own as well.
-![](docs/005.png)
+
+![](../docs/005.png)
 ___
 ### How to play
 Download the jar from [releases](https://codeberg.org/distantbytes/Tic-tac-terminal/releases), then use this terminal command:
@@ -33,6 +34,8 @@ java -jar Tic-tac-terminal-<version>.jar 2
 ```
 
 (Replace `<version>` with actual version number)
+
+![](../docs/006.png)
 
 ### Requirements
 - _JDK 11_
