@@ -2,7 +2,7 @@ package com.distantbytes.tictacterminal
 
 import kotlin.random.Random
 
-class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<Square>, target: Piece, k: Int) -> Square?, Int> = simpleStrategies) : Player(Piece.O) {
+class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<Square>, target: Piece, k: Int) -> List<Square>, Int> = simpleStrategies) : Player(Piece.O) {
     override fun takeMove(): Step {
         val extracted = board.extractArray()
         val candidates: MutableMap<Square, Int> = mutableMapOf()
@@ -22,9 +22,15 @@ class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<S
             for (eachDir in extracted) {
                 for (eachLined in eachDir) {
                     strategy.invoke(eachLined, Piece.X, board.k)
-                        ?.let { candidates.put(it, (candidates[it] ?: 0) + weight) }
+                        .let {
+                            for (eachSquare in it)
+                            candidates.put(eachSquare, (candidates[eachSquare] ?: 0) + weight + 1) 
+                        }
                     strategy.invoke(eachLined, piece, board.k)
-                        ?.let { candidates.put(it, (candidates[it] ?: 0) + weight) }
+                        .let {
+                            for (eachSquare in it)
+                            candidates.put(eachSquare, (candidates[eachSquare] ?: 0) + weight) 
+                        }
                 }
             }
             print(".")
@@ -50,28 +56,28 @@ class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<S
 
         val simpleStrategies = mapOf(
 
-            fun(seq: Array<Square>, target: Piece, _: Int): Square? {
+            fun(seq: Array<Square>, target: Piece, _: Int): List<Square> {
                 var countLeft = 0
-                var oneLeft: Square? = null
+                lateinit var oneLeft: Square
                 for (eachSquare in seq){
                     when (eachSquare.piece){
                         Piece.BLANK -> {   //when the same enum value as mOneLeft is matched
                             countLeft++
-                            if (countLeft > 1) return null  //check countLeft right away
+                            if (countLeft > 1) return emptyList()  //check countLeft right away
                             oneLeft = eachSquare
                         }
                         target -> {/*do nothing*/}
-                        else -> return null //return null if a third value is discovered
+                        else -> return emptyList() //return null if a third value is discovered
                     }
                 }
-                return oneLeft  //no need for an if check
+                return listOf(oneLeft)  //no need for an if check
             } to 5
 
         )
 
         val complexStrategies = mapOf(
 
-            fun(array: Array<Square>, target: Piece, k: Int): Square?{  //straight three
+            fun(array: Array<Square>, target: Piece, k: Int): List<Square>{  //straight three
                 require(target != Piece.BLANK)
                 require(k in 5..array.size)
                 //the sequence of a straight three is: _ * * * _
@@ -95,13 +101,13 @@ class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<S
                     }
                 }
                 return if (seq.size == k) {
-                    seq.filter { it.piece == Piece.BLANK }.shuffled()[0]
+                    seq.filter { it.piece == Piece.BLANK }
                 } else {
-                    null
+                    emptyList()
                 }
-            } to 5,
+            } to 25,
 
-            fun(array: Array<Square>, target: Piece, k: Int): Square?{  //four
+            fun(array: Array<Square>, target: Piece, k: Int): List<Square>{  //four
                 require(target != Piece.BLANK)
                 require(k in 5..array.size)
                 //the sequence of an open four is: * * * * _
@@ -123,10 +129,13 @@ class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<S
                         else -> seq.clear()
                     }
                 }
-                return if (seq.size == k) seq.singleOrNull { it.piece == Piece.BLANK } else null
-            } to 4,
+                //return if (seq.size == k) seq.singleOrNull { it.piece == Piece.BLANK } else null
+                return seq.takeIf { it.size == k }
+                    ?.let { listOfNotNull(it.singleOrNull { s -> s.piece == Piece.BLANK }) }
+                    .orEmpty()
+            } to 16,
 
-            fun(array: Array<Square>, target: Piece, k: Int): Square?{  //live three
+            fun(array: Array<Square>, target: Piece, k: Int): List<Square>{  //live three
                 require(target != Piece.BLANK)
                 require(k in 4..array.size)
 
@@ -138,7 +147,7 @@ class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<S
                         && seq.count { it.piece == Piece.BLANK } == 1
                         && seq[0].piece == target
                         && seq.last().piece == target
-                    ) return seq.singleOrNull { it.piece == Piece.BLANK }
+                    ) return listOfNotNull(seq.singleOrNull { it.piece == Piece.BLANK })
                     else if (seq.size == k - 1) seq.removeAt(0)
                 }
                 /*for (eachSquare in array) {
@@ -151,10 +160,10 @@ class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<S
                     ) return seq.filter { it.piece == Piece.BLANK }.shuffled()[0]
                     else if (seq.size == k) seq.removeAt(0)
                 }*/
-                return null
-            } to 3,
+                return emptyList()
+            } to 9,
 
-            fun(array: Array<Square>, target: Piece, k: Int): Square?{  //live two
+            fun(array: Array<Square>, target: Piece, k: Int): List<Square>{  //live two
                 require(target != Piece.BLANK)
                 require(k in 4..array.size)
                 val seq = mutableListOf<Square>()
@@ -165,13 +174,13 @@ class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<S
                         && seq.count { it.piece == target } == k - 3
                         && seq[0].piece == Piece.BLANK
                         && seq.last().piece == Piece.BLANK
-                    ) return seq.filter { it.piece == Piece.BLANK }.shuffled()[0]
+                    ) return seq.filter { it.piece == Piece.BLANK }
                     else if (seq.size == k - 1) seq.removeAt(0)
                 }
-                return null
-            } to 2,
+                return emptyList()
+            } to 4,
 
-            fun(array: Array<Square>, mTarget: Piece, _:Int): Square?{
+            fun(array: Array<Square>, mTarget: Piece, _:Int): List<Square>{
                 require(mTarget != Piece.BLANK)
                 require(array.size > 3)
 
@@ -190,7 +199,7 @@ class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<S
                         candidates[seq[seq.indexOfLast { it.piece == mTarget } + 1]] = seq.count { it.piece == mTarget }
                     } else if (seq.size == 3) seq.removeAt(0)
                 }
-                return if (candidates.isNotEmpty()) sortByValueDescendingWithRandomTies(candidates).keys.toList()[0] else null
+                return if (candidates.isNotEmpty()) candidates.keys.toList() else emptyList()
             } to 1
         )
     }
