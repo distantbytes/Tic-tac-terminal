@@ -6,7 +6,7 @@ class MnkBot(private val board: Board, private val strategies: Map<(seq: Array<S
     override fun takeMove(): Step {
         val extracted = board.extractArray()
         val candidates: MutableMap<Square, Int> = mutableMapOf()
-        print("Thinking")
+        print(getBundleString("bot.thinking"))
         /*for (eachDir in extracted) {
             for (eachLined in eachDir) {
                 print(".")
