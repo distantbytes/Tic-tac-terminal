@@ -89,7 +89,11 @@ http-client.private.env.json
 
 
 ## ADDED BY ME
+
 # Terminal scripts
 *.sh
 *.bat
 *.cmd
+
+# Build
+build/
